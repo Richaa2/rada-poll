@@ -12,7 +12,7 @@ class DrawerWidget extends StatelessWidget {
         children: const [
           drawer_tile(
             text: 'перейти до голосування',
-            routeName: '/Poll',
+            routeName: '/SelectPoll',
           ),
           drawer_tile(
             text: 'зробити голосування',

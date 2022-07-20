@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polls/flutter_polls.dart';
@@ -5,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:rada_poll/models/poll.dart';
 
 import 'package:rada_poll/models/poll_data.dart';
+
+int waitOrClickOrStart = 2;
 
 class PollScreen extends StatefulWidget {
   int indexOfPoll;
@@ -18,12 +22,33 @@ class PollScreen extends StatefulWidget {
 }
 
 class _PollScreenState extends State<PollScreen> {
-  int waitOrClickOrStart = 2;
+  late int seconds;
+  Timer? timer;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    seconds = 10;
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        seconds--;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PollData>(
       builder: (BuildContext context, pollData, Widget? child) {
+        if (seconds == 0) {
+          print(pollData.polls[widget.indexOfPoll].option[0].votes);
+          seconds = 10;
+          print(seconds);
+        }
         final poll = pollData.polls[widget.indexOfPoll];
 
         final int days = DateTime(
@@ -45,20 +70,65 @@ class _PollScreenState extends State<PollScreen> {
               height: MediaQuery.of(context).size.height,
               padding: const EdgeInsets.all(20),
               child: Center(
-                child: waitOrClickOrStart == 1
-                    ? Text("Wait for others")
-                    : waitOrClickOrStart == 2
-                        ? ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                waitOrClickOrStart = 3;
-                              });
-                              final player = AudioCache();
-                              player.play('2.mp3');
-                            },
-                            child: Text('Click for start voting process'))
-                        : ContainerOfPoll(poll: poll, days: days),
-              ),
+                  child: waitOrClickOrStart == 1
+                      ? Text("Wait for others")
+                      : waitOrClickOrStart == 2
+                          ? ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  waitOrClickOrStart = 3;
+                                  startTimer();
+                                });
+
+                                final player = AudioCache();
+                                player.play('2.mp3');
+                              },
+                              child: Text('Click for start voting process'))
+                          : waitOrClickOrStart == 3
+                              ? ContainerOfPoll(
+                                  poll: poll,
+                                  days: days,
+                                  seconds: seconds,
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Za zalypu   ' +
+                                          pollData.polls[widget.indexOfPoll]
+                                              .option[0].votes
+                                              .toString(),
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: 100,
+                                    ),
+                                    Text(
+                                        'proty zalypu   ' +
+                                            pollData.polls[widget.indexOfPoll]
+                                                .option[1].votes
+                                                .toString(),
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w700)),
+                                    SizedBox(
+                                      height: 100,
+                                    ),
+                                    Text(
+                                        'pizda blyat  ' +
+                                            pollData.polls[widget.indexOfPoll]
+                                                .option[2].votes
+                                                .toString(),
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w700)),
+                                  ],
+                                )),
             ),
           ),
         );
@@ -72,8 +142,9 @@ class ContainerOfPoll extends StatelessWidget {
     Key? key,
     required this.poll,
     required this.days,
+    required this.seconds,
   }) : super(key: key);
-
+  final int seconds;
   final Poll poll;
   final int days;
 
@@ -85,10 +156,12 @@ class ContainerOfPoll extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 20),
       child: FlutterPolls(
         pollId: poll.id.toString(),
-        // hasVoted: hasVoted.value,
+        hasVoted: false,
         // userVotedOptionId: userVotedOptionId.value,
         onVoted: (PollOption pollOption, int newTotalVotes) async {
-          await Future.delayed(const Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: seconds - 1));
+
+          waitOrClickOrStart = 4;
 
           /// If HTTP status is success, return true else false
           return true;

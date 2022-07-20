@@ -1,4 +1,4 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polls/flutter_polls.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +53,8 @@ class _PollScreenState extends State<PollScreen> {
                               setState(() {
                                 waitOrClickOrStart = 3;
                               });
+                              final player = AudioCache();
+                              player.play('2.mp3');
                             },
                             child: Text('Click for start voting process'))
                         : ContainerOfPoll(poll: poll, days: days),

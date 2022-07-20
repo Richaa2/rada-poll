@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_polls/flutter_polls.dart';
+
 import 'package:provider/provider.dart';
 import 'package:rada_poll/models/poll.dart';
 import 'package:rada_poll/models/poll_data.dart';

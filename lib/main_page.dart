@@ -20,7 +20,7 @@ class MainPage extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/1.png"),
+                  image: AssetImage("assets/images/1.png"),
                   fit: BoxFit.contain,
                 ),
               ),

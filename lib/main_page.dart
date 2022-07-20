@@ -15,18 +15,23 @@ class MainPage extends StatelessWidget {
           centerTitle: true,
           title: Text('Poll rada'),
         ),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/1.png"),
-                  fit: BoxFit.contain,
+        body: Container(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.blue, Color.fromARGB(255, 212, 140, 32)],
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/1.png"),
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-            ),
-            Center()
-          ],
+              Center()
+            ],
+          ),
         ));
   }
 }

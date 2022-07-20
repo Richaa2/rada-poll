@@ -6,6 +6,7 @@ import 'package:rada_poll/models/poll_data.dart';
 import 'package:rada_poll/poll_screen.dart';
 import 'package:rada_poll/select_poll.dart';
 
+import 'login_screen.dart';
 import 'main_page.dart';
 
 void main() {
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             initialRoute: '/',
             routes: {
+              // '/': (context) => PollScreen(
+              //       indexOfPoll: 2,
+              //     ),
               '/': (context) => MainPage(),
               '/Archive': ((context) => ArchiveScreen()),
               '/Add': ((context) => AddPollScreen()),
@@ -31,9 +35,7 @@ class MyApp extends StatelessWidget {
               '/SelectPoll': ((context) => SelectPoll())
             },
             title: 'Rada',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
+            theme: ThemeData(scaffoldBackgroundColor: Colors.blue),
           );
         });
   }

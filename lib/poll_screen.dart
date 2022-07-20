@@ -8,7 +8,7 @@ import 'package:rada_poll/models/poll.dart';
 
 import 'package:rada_poll/models/poll_data.dart';
 
-int waitOrClickOrStart = 2;
+int waitOrClickOrStart = 1;
 
 class PollScreen extends StatefulWidget {
   int indexOfPoll;
@@ -23,32 +23,70 @@ class PollScreen extends StatefulWidget {
 
 class _PollScreenState extends State<PollScreen> {
   late int seconds;
-  Timer? timer;
+  late int seconds2;
+  Timer? timer1;
+  Timer? timer2;
+  int people = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     seconds = 10;
+    seconds2 = 5;
   }
 
   void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer1 = Timer.periodic(Duration(seconds: 1), (timer1) {
       setState(() {
         seconds--;
       });
     });
   }
 
+  void startTimer2() {
+    timer2 = Timer.periodic(Duration(seconds: 1), (timer2) {
+      if (seconds2 > 0 && waitOrClickOrStart == 1) {
+        setState(() {
+          seconds2--;
+          people = people + 3;
+          print(seconds2);
+        });
+      } else {
+        pauseTimer2();
+      }
+    });
+  }
+
+  void pauseTimer1() {
+    setState(() {
+      timer1?.cancel();
+    });
+  }
+
+  void pauseTimer2() {
+    timer2?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<PollData>(
       builder: (BuildContext context, pollData, Widget? child) {
-        if (seconds == 0) {
-          print(pollData.polls[widget.indexOfPoll].option[0].votes);
-          seconds = 10;
-          print(seconds);
+        if (seconds2 == 5) {
+          startTimer2();
         }
+        if (seconds2 == 0) {
+          seconds2 = -1;
+          waitOrClickOrStart = 2;
+        }
+
+        if (seconds2 >= 6) {}
+
+        if (seconds == 0) {
+          seconds = 10;
+          print('seconds' + seconds.toString());
+        }
+
         final poll = pollData.polls[widget.indexOfPoll];
 
         final int days = DateTime(
@@ -65,70 +103,130 @@ class _PollScreenState extends State<PollScreen> {
 
         return Scaffold(
           appBar: AppBar(title: const Text('Rada Poll')),
-          body: Center(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.all(20),
-              child: Center(
-                  child: waitOrClickOrStart == 1
-                      ? Text("Wait for others")
-                      : waitOrClickOrStart == 2
-                          ? ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  waitOrClickOrStart = 3;
-                                  startTimer();
-                                });
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blue, Color.fromARGB(255, 212, 140, 32)],
+              ),
+            ),
+            child: Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                    child: waitOrClickOrStart == 1
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Часу до початку голосування  $seconds2 хв ',
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700)),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text('зайшло $people',
+                                  style: TextStyle(
+                                      color: Colors.yellow,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700)),
+                            ],
+                          )
+                        : waitOrClickOrStart == 2
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    waitOrClickOrStart = 3;
+                                    startTimer();
+                                    print(waitOrClickOrStart);
+                                  });
 
-                                final player = AudioCache();
-                                player.play('2.mp3');
-                              },
-                              child: Text('Click for start voting process'))
-                          : waitOrClickOrStart == 3
-                              ? ContainerOfPoll(
-                                  poll: poll,
-                                  days: days,
-                                  seconds: seconds,
-                                )
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Za zalypu   ' +
-                                          pollData.polls[widget.indexOfPoll]
-                                              .option[0].votes
-                                              .toString(),
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    SizedBox(
-                                      height: 100,
-                                    ),
-                                    Text(
-                                        'proty zalypu   ' +
+                                  final player = AudioCache();
+                                  player.play('2.mp3');
+                                },
+                                child: Text('Click for start voting process'))
+                            : waitOrClickOrStart == 3
+                                ? ContainerOfPoll(
+                                    poll: poll,
+                                    days: days,
+                                    seconds: seconds,
+                                  )
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Za zalypu   ' +
                                             pollData.polls[widget.indexOfPoll]
-                                                .option[1].votes
+                                                .option[0].votes
                                                 .toString(),
                                         style: TextStyle(
-                                            color: Colors.red,
+                                            color: Colors.green,
                                             fontSize: 30,
-                                            fontWeight: FontWeight.w700)),
-                                    SizedBox(
-                                      height: 100,
-                                    ),
-                                    Text(
-                                        'pizda blyat  ' +
-                                            pollData.polls[widget.indexOfPoll]
-                                                .option[2].votes
-                                                .toString(),
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w700)),
-                                  ],
-                                )),
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      SizedBox(
+                                        height: 100,
+                                      ),
+                                      Text(
+                                          'proty zalypu   ' +
+                                              pollData.polls[widget.indexOfPoll]
+                                                  .option[1].votes
+                                                  .toString(),
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w700)),
+                                      SizedBox(
+                                        height: 100,
+                                      ),
+                                      Text(
+                                          'pizda blyat  ' +
+                                              pollData.polls[widget.indexOfPoll]
+                                                  .option[2].votes
+                                                  .toString(),
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w700)),
+                                      SizedBox(
+                                        height: 100,
+                                      ),
+                                      Text('ne golosyvalo  ',
+                                          style: TextStyle(
+                                              color: Colors.teal,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w700)),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            if (pollData
+                                                    .polls[widget.indexOfPoll]
+                                                    .option[0]
+                                                    .votes >
+                                                pollData
+                                                        .polls[
+                                                            widget.indexOfPoll]
+                                                        .option[1]
+                                                        .votes +
+                                                    pollData
+                                                        .polls[
+                                                            widget.indexOfPoll]
+                                                        .option[2]
+                                                        .votes) {
+                                              poll.changeDecision();
+                                            } else {
+                                              poll.decision = false;
+                                            }
+                                            Navigator.popUntil(context,
+                                                ModalRoute.withName('/'));
+                                            poll.votedOrNo = true;
+                                            waitOrClickOrStart = 1;
+                                          },
+                                          child: Text('завершити'))
+                                    ],
+                                  )),
+              ),
             ),
           ),
         );
@@ -167,7 +265,7 @@ class ContainerOfPoll extends StatelessWidget {
           return true;
         },
         pollEnded: days < 0,
-        pollTitle: Align(
+        pollTitle: Container(
           alignment: Alignment.centerLeft,
           child: Text(
             poll.question + poll.id.toString(),

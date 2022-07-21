@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -53,7 +54,7 @@ class _AddPollScreenState extends State<AddPollScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 8, horizontal: 20),
                       child: Container(
-                          color: Colors.amber,
+                          color: Colors.amber.withOpacity(0.6),
                           height: 70,
                           child: ListTile(
                             title: Text(poll.elementAt(index).question),

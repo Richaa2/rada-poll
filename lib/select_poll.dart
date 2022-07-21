@@ -32,8 +32,15 @@ class SelectPoll extends StatelessWidget {
                   .id -
               1;
           print(selectedPoll);
-        } else {
+        }
+
+        if (pollData.polls.any((element) =>
+        element.startDate.day != DateTime.now().day &&
+            element.startTime.hour != TimeOfDay.now().hour &&
+            element.votedOrNo != false)) {
+          print('False');
           haveOrNo = false;
+
         }
         return Container(
           child: Scaffold(
@@ -42,16 +49,8 @@ class SelectPoll extends StatelessWidget {
                 centerTitle: true,
               ),
               body: haveOrNo == false
-                  ? Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.blue,
-                            Color.fromARGB(255, 212, 140, 32)
-                          ],
-                        ),
-                      ),
-                      child: Container(
+                  ?
+                      Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -63,8 +62,8 @@ class SelectPoll extends StatelessWidget {
                         child: Center(
                           child: Text('Sorry but not have poll right now'),
                         ),
-                      ),
-                    )
+                      )
+
                   : Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -84,7 +83,7 @@ class SelectPoll extends StatelessWidget {
                                           indexOfPoll: selectedPoll,
                                         )));
                           },
-                          child: Text('Auntefication'),
+                          child: Text('ВЕРЕТИФІКАЦІЯ'),
                         ),
                       ),
                     )),

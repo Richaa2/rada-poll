@@ -27,7 +27,7 @@ class ArchiveScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   child: Container(
-                      color: Colors.amber,
+                      color: Colors.amber.withOpacity(0.6),
                       height: 70,
                       child: ListTile(
                           title: Text(poll.elementAt(index).question),

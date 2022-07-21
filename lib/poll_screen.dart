@@ -10,7 +10,11 @@ import 'package:rada_poll/models/poll.dart';
 import 'package:rada_poll/models/poll_data.dart';
 
 int waitOrClickOrStart = 1;
-const kTextStyle = TextStyle(color: Colors.grey,fontSize: 22,);
+const kTextStyle = TextStyle(
+  color: Colors.grey,
+  fontSize: 22,
+);
+
 class PollScreen extends StatefulWidget {
   int indexOfPoll;
   PollScreen({
@@ -110,13 +114,14 @@ class _PollScreenState extends State<PollScreen> {
             .inDays;
 // TODO users logined
         return Scaffold(
-
-          body:  Container(
-            decoration:waitOrClickOrStart < 4 ? BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.blue, Color.fromARGB(255, 212, 140, 32)],
-              ),
-            ) : BoxDecoration(color: Colors.black),
+          body: Container(
+            decoration: waitOrClickOrStart < 4
+                ? BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue, Color.fromARGB(255, 212, 140, 32)],
+                    ),
+                  )
+                : BoxDecoration(color: Colors.black),
             child: Center(
               child: Container(
                 height: MediaQuery.of(context).size.height,
@@ -126,19 +131,26 @@ class _PollScreenState extends State<PollScreen> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [ Spacer(flex: 3,),
+                            children: [
+                              Spacer(
+                                flex: 3,
+                              ),
                               Text('Часу до початку голосування  $seconds2 хв ',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 30,
                                       fontWeight: FontWeight.w700)),
-                             Spacer(flex: 2,),
+                              Spacer(
+                                flex: 2,
+                              ),
                               Text('зайшло $people',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 30,
                                       fontWeight: FontWeight.w700)),
-                              Spacer(flex: 3,),
+                              Spacer(
+                                flex: 3,
+                              ),
                             ],
                           )
                         : waitOrClickOrStart == 2
@@ -153,7 +165,9 @@ class _PollScreenState extends State<PollScreen> {
                                   final player = AudioCache();
                                   player.play('2.mp3');
                                 },
-                                child: Text('ПОЧАТИ ГОЛОСУВАННЯ',))
+                                child: Text(
+                                  'ПОЧАТИ ГОЛОСУВАННЯ',
+                                ))
                             : waitOrClickOrStart == 3
                                 ? ContainerOfPoll(
                                     poll: poll,
@@ -163,96 +177,117 @@ class _PollScreenState extends State<PollScreen> {
                                 : Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('ПІДСУМКИ ГОЛОСУВАННЯ',style: kTextStyle,textAlign: TextAlign.start,),
-                                      Row(mainAxisAlignment: MainAxisAlignment.end,
+                                      Text(
+                                        'ПІДСУМКИ ГОЛОСУВАННЯ',
+                                        style: kTextStyle,
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Flexible(
                                             flex: 6,
                                             child: Column(
-
-                                             crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text('ЗА', style: kTextStyle),
+                                                Text('ПРОТИ',
+                                                    style: kTextStyle),
+                                                Text('УТРИМАЛИСЬ',
+                                                    style: kTextStyle),
                                                 Text(
-                                                  'ЗА' ,
-
-                                                  style: kTextStyle
+                                                  'НЕ ГОЛОСУВАЛО',
+                                                  style: kTextStyle,
+                                                  maxLines: 1,
                                                 ),
                                                 Text(
-                                                    'ПРОТИ',
-                                                    style: kTextStyle),
-
-                                                Text(
-                                                    'УТРИМАЛИСЬ' ,
-
-                                                    style: kTextStyle),
-
-                                                Text('НЕ ГОЛОСУВАЛО',
-                                                    style: kTextStyle,maxLines: 1,),
-                                              Text('ВСЬОГО',
-                                                style: kTextStyle,maxLines: 1,),
+                                                  'ВСЬОГО',
+                                                  style: kTextStyle,
+                                                  maxLines: 1,
+                                                ),
                                               ],
                                             ),
                                           ),
-
-                                          Spacer(flex: 1,),Flexible(
+                                          Spacer(
+                                            flex: 1,
+                                          ),
+                                          Flexible(
                                             flex: 3,
-                                            child: Column(crossAxisAlignment: CrossAxisAlignment.end,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
                                               children: [
                                                 Text(
-
-                                                      pollData.polls[widget.indexOfPoll]
-                                                          .option[0].votes
-                                                          .toString(),
-                                                  style: TextStyle(
+                                                    pollData
+                                                        .polls[
+                                                            widget.indexOfPoll]
+                                                        .option[0]
+                                                        .votes
+                                                        .toString(),
+                                                    style: TextStyle(
                                                       color: Colors.green,
                                                       fontSize: 22,
-                                                      )
-                                                ),
+                                                    )),
                                                 Text(
-
-                                                        pollData.polls[widget.indexOfPoll]
-                                                            .option[1].votes
-                                                            .toString(),
+                                                    pollData
+                                                        .polls[
+                                                            widget.indexOfPoll]
+                                                        .option[1]
+                                                        .votes
+                                                        .toString(),
                                                     style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 22,
-                                                        )),
-
+                                                      color: Colors.red,
+                                                      fontSize: 22,
+                                                    )),
                                                 Text(
-
-                                                        pollData.polls[widget.indexOfPoll]
-                                                            .option[2].votes
-                                                            .toString(),
+                                                    pollData
+                                                        .polls[
+                                                            widget.indexOfPoll]
+                                                        .option[2]
+                                                        .votes
+                                                        .toString(),
                                                     style: TextStyle(
-                                                        color: Colors.yellow,
-                                                        fontSize: 22,
-                                                        )),
-                                              
+                                                      color: Colors.yellow,
+                                                      fontSize: 22,
+                                                    )),
                                                 Text('0',
                                                     style: TextStyle(
-                                                        color: Colors.teal,
-                                                        fontSize: 22,
-                                                        )),
+                                                      color: Colors.teal,
+                                                      fontSize: 22,
+                                                    )),
                                                 Text('0',
                                                     style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 22,
-                                                        )),
+                                                      color: Colors.grey,
+                                                      fontSize: 22,
+                                                    )),
                                               ],
                                             ),
                                           ),
-                                          Spacer(flex: 2,)
+                                          Spacer(
+                                            flex: 2,
+                                          )
                                         ],
                                       ),
-                                      SizedBox(height: 15,),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
                                       Text('РІШЕННЯ ПРИЙНЯТО',
                                           style: TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 22,
-                                              )),
-
-                                      SizedBox(height: 100,),
+                                            color: Colors.green,
+                                            fontSize: 22,
+                                          )),
+                                      SizedBox(
+                                        height: 100,
+                                      ),
                                       ElevatedButton(
-                                        style: ButtonStyle(  backgroundColor: MaterialStateProperty.all(Colors.blueGrey.withOpacity(0.5)),),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(Colors
+                                                    .blueGrey
+                                                    .withOpacity(0.5)),
+                                          ),
                                           onPressed: () {
                                             if (pollData
                                                     .polls[widget.indexOfPoll]
@@ -277,9 +312,12 @@ class _PollScreenState extends State<PollScreen> {
                                                 ModalRoute.withName('/'));
                                             poll.votedOrNo = true;
                                             waitOrClickOrStart = 1;
-
                                           },
-                                          child: Text('завершити',style: TextStyle(color: Colors.yellow),))
+                                          child: Text(
+                                            'завершити',
+                                            style:
+                                                TextStyle(color: Colors.yellow),
+                                          ))
                                     ],
                                   )),
               ),
@@ -308,15 +346,13 @@ class ContainerOfPoll extends StatelessWidget {
       width: 300,
       height: 500,
       margin: const EdgeInsets.only(bottom: 20),
-      
       child: Expanded(
         child: FlutterPolls(
-          
           pollId: poll.id.toString(),
           hasVoted: false,
           // userVotedOptionId: userVotedOptionId.value,
           onVoted: (PollOption pollOption, int newTotalVotes) async {
-            await Future.delayed(Duration(seconds: seconds - 1));
+            await Future.delayed(Duration(seconds: seconds - 2));
 
             waitOrClickOrStart = 4;
 
@@ -330,14 +366,16 @@ class ContainerOfPoll extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    'id: '+ poll.id.toString()+'    '+poll.question ,
+                    'id: ' + poll.id.toString() + '    ' + poll.question,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                SizedBox(height: 150,),
+                SizedBox(
+                  height: 150,
+                ),
               ],
             ),
           ),
@@ -346,8 +384,6 @@ class ContainerOfPoll extends StatelessWidget {
             fontSize: 10,
             fontWeight: FontWeight.w600,
           ),
-
-
         ),
       ),
     );

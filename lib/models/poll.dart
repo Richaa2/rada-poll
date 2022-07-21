@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polls/flutter_polls.dart';
 
 class Poll {
   int id;
   String question;
-  DateTime endDate = DateTime(
-      DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-  TimeOfDay endTime = TimeOfDay(hour: 0, minute: 0);
-  DateTime startDate;
-  TimeOfDay startTime;
+  int endDate = DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day + 1)
+      .millisecondsSinceEpoch;
+  int endTime = TimeOfDay(hour: 0, minute: 0).hour;
+  Timestamp startTimestamp;
+  // int startDate;
+  int startTime;
   bool votedOrNo;
   bool decision;
   List<PollOption> option = [
@@ -37,15 +40,18 @@ class Poll {
         votes: 0,
         id: 3)
   ];
+  int startMinute;
   Poll(
       {required this.id,
       required this.question,
       required this.endDate,
       required this.endTime,
-      required this.startDate,
+      // required this.startDate,
       required this.startTime,
       this.votedOrNo = false,
-      this.decision = false});
+      this.decision = false,
+      required this.startMinute,
+      required this.startTimestamp});
 
   void changeDecision() {
     decision = true;

@@ -59,19 +59,15 @@ class _AddPollScreenState extends State<AddPollScreen> {
                           child: ListTile(
                             title: Text(poll.elementAt(index).question),
                             subtitle: Text('час початку  ' +
-                                poll
-                                    .elementAt(index)
-                                    .startTime
-                                    .hour
-                                    .toString() +
-                                ':' +
-                                poll
-                                    .elementAt(index)
-                                    .startTime
-                                    .minute
-                                    .toString() +
-                                ' число  ' +
-                                poll.elementAt(index).startDate.day.toString()),
+                                    poll.elementAt(index).startTime.toString() +
+                                    ':' +
+                                    poll
+                                        .elementAt(index)
+                                        .startMinute
+                                        .toString() +
+                                    ' число  '
+                                // poll.elementAt(index).startDate.day.toString()
+                                ),
                           )),
                     );
                   },

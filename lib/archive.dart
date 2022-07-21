@@ -32,12 +32,14 @@ class ArchiveScreen extends StatelessWidget {
                       child: ListTile(
                           title: Text(poll.elementAt(index).question),
                           subtitle: Text('час початку  ' +
-                              pollData.polls[index].startTime.hour.toString() +
+                              pollData.polls[index].startTime.toString() +
                               ':' +
-                              pollData.polls[index].startTime.minute
-                                  .toString() +
+                              pollData.polls[index].startTime.toString() +
                               ' число  ' +
-                              pollData.polls[index].startDate.day.toString()),
+                              pollData.polls[index].startTimestamp
+                                  .toDate()
+                                  .day
+                                  .toString()),
                           trailing: poll.elementAt(index).decision
                               ? Text('Рішення прийнято')
                               : Text('Рішення не прийнято'))),

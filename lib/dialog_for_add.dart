@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -63,14 +64,16 @@ class _DialogForAddState extends State<DialogForAdd> {
                   "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}"),
               ElevatedButton(
                   onPressed: () {
-                    pollData.createPoll(Poll(
+                    pollData.addPoll(Poll(
                       id: pollData.polls.last.id + 1,
                       question: questioninput,
-                      endDate: pollData.selectedTime,
-                      endTime: pollData.selectedTime2,
-                      startDate: dateTime,
-                      startTime: Time,
+                      endDate: pollData.selectedTime.millisecondsSinceEpoch,
+                      endTime: pollData.selectedTime2.hour,
+                      // startDate: dateTime.millisecondsSinceEpoch,
+                      startTime: Time.hour,
+                      startMinute: Time.minute,
                       votedOrNo: false,
+                      startTimestamp: Timestamp.fromDate(dateTime),
                     ));
                     Navigator.pop(context);
                     // Navigator.popAndPushNamed(context, '/SelectPoll');

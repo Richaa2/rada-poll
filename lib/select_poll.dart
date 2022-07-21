@@ -18,16 +18,17 @@ class SelectPoll extends StatelessWidget {
       builder: (context, pollData, child) {
         late int selectedPoll;
         if (pollData.polls.any((element) =>
-            element.startDate.day == DateTime.now().day &&
-            element.startTime.hour == TimeOfDay.now().hour &&
+            element.startTimestamp.toDate().day == DateTime.now().day &&
+            element.startTime == TimeOfDay.now().hour &&
             element.votedOrNo == false)) {
           print('lol');
           haveOrNo = true;
           selectedPoll = pollData.polls
                   .firstWhere((element) =>
-                      element.startDate.day == DateTime.now().day &&
-                      element.startTime.hour == TimeOfDay.now().hour &&
-                      element.startTime.minute == TimeOfDay.now().minute &&
+                      element.startTimestamp.toDate().day ==
+                          DateTime.now().day &&
+                      element.startTime == TimeOfDay.now().hour &&
+                      element.startMinute == TimeOfDay.now().minute &&
                       element.votedOrNo == false)
                   .id -
               1;
@@ -35,12 +36,11 @@ class SelectPoll extends StatelessWidget {
         }
 
         if (pollData.polls.any((element) =>
-        element.startDate.day != DateTime.now().day &&
-            element.startTime.hour != TimeOfDay.now().hour &&
+            element.startTimestamp.toDate().day != DateTime.now().day &&
+            element.startTime != TimeOfDay.now().hour &&
             element.votedOrNo != false)) {
           print('False');
           haveOrNo = false;
-
         }
         return Container(
           child: Scaffold(
@@ -49,21 +49,19 @@ class SelectPoll extends StatelessWidget {
                 centerTitle: true,
               ),
               body: haveOrNo == false
-                  ?
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue,
-                              Color.fromARGB(255, 212, 140, 32)
-                            ],
-                          ),
+                  ? Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.blue,
+                            Color.fromARGB(255, 212, 140, 32)
+                          ],
                         ),
-                        child: Center(
-                          child: Text('Sorry but not have poll right now'),
-                        ),
-                      )
-
+                      ),
+                      child: Center(
+                        child: Text('Sorry but not have poll right now'),
+                      ),
+                    )
                   : Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(

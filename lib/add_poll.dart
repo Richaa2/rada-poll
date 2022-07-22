@@ -7,14 +7,7 @@ import 'package:rada_poll/dialog_for_add.dart';
 import 'package:rada_poll/models/poll.dart';
 import 'package:rada_poll/models/poll_data.dart';
 
-class AddPollScreen extends StatefulWidget {
-  const AddPollScreen({Key? key}) : super(key: key);
-
-  @override
-  State<AddPollScreen> createState() => _AddPollScreenState();
-}
-
-class _AddPollScreenState extends State<AddPollScreen> {
+class AddPollScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String questioninput = '';
@@ -40,6 +33,10 @@ class _AddPollScreenState extends State<AddPollScreen> {
                       startMinute: poll["startMinute"],
                       startTimestamp: poll["w"],
                       votedOrNo: poll["votedOrNo"],
+                      yes: poll["yes"],
+                      no: poll['no'],
+                      didNotVote: poll['didNotVote'],
+                      hold: poll['hold'],
                     );
                     polls.add(accountRow);
                   }

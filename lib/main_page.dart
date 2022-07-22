@@ -4,11 +4,23 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'drawer_widget.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
   @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // dispose();
     return Scaffold(
         drawer: DrawerWidget(),
         appBar: AppBar(

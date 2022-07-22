@@ -16,35 +16,41 @@ class SelectPoll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('poll').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("poll")
+            .orderBy(
+              "id",
+            )
+            .snapshots(),
         builder: (context, snapshot) {
           return Consumer<PollData>(
             builder: (context, pollData, child) {
               if (snapshot.hasData) {
                 var pollsFire = snapshot.data!.docs;
-                var polls = pollData.polls
-                  ..sort(((a, b) => b.id.compareTo(a.id)));
+                var polls = pollData.polls;
 
-                if (polls.isEmpty) {
-                  if (polls.length < pollsFire.length) {
-                    for (var poll in pollsFire) {
-                      final accountRow = Poll(
-                        decision: poll['decision'],
-                        startTime: poll['startTime'],
-                        endDate: poll["endDate"],
-                        endTime: poll["endTime"],
-                        id: poll["id"],
-                        question: poll['question'],
-                        startMinute: poll["startMinute"],
-                        startTimestamp: poll["w"],
-                        votedOrNo: poll["votedOrNo"],
-                      );
-                      polls.add(accountRow);
-                    }
-                  }
-                }
+                // ..sort(((a, b) => b.id.compareTo(a.id)));
 
-                late int selectedPoll;
+                // if (polls.isEmpty) {
+                //   if (polls.length < pollsFire.length) {
+                //     for (var poll in pollsFire) {
+                //       final accountRow = Poll(
+                //         decision: poll['decision'],
+                //         startTime: poll['startTime'],
+                //         endDate: poll["endDate"],
+                //         endTime: poll["endTime"],
+                //         id: poll["id"],
+                //         question: poll['question'],
+                //         startMinute: poll["startMinute"],
+                //         startTimestamp: poll["w"],
+                //         votedOrNo: poll["votedOrNo"],
+                //       );
+                //       polls.add(accountRow);
+                //     }
+                //   }
+                // }
+
+                late String selectedPoll;
                 if (polls.any((element) =>
                     element.startTimestamp.toDate().day == DateTime.now().day &&
                     element.startTime == TimeOfDay.now().hour &&
@@ -52,16 +58,26 @@ class SelectPoll extends StatelessWidget {
                     element.votedOrNo == false)) {
                   print('lol');
                   haveOrNo = true;
-                  selectedPoll = pollData.polls
-                          .firstWhere((element) =>
-                              element.startTimestamp.toDate().day ==
-                                  DateTime.now().day &&
-                              element.startTime == TimeOfDay.now().hour &&
-                              element.startMinute == TimeOfDay.now().minute &&
-                              element.votedOrNo == false)
-                          .id -
-                      1;
-                  print(selectedPoll);
+                  // selectedPoll = polls.indexWhere((element) =>
+                  //     element.startTimestamp.toDate().day ==
+                  //         DateTime.now().day &&
+                  //     element.startTime == TimeOfDay.now().hour &&
+                  //     element.startMinute == TimeOfDay.now().minute &&
+                  //     element.votedOrNo == false);
+
+                  selectedPoll = pollsFire
+                      .firstWhere(
+                        (element) =>
+                            // element.get('w') ==
+                            //     Timestamp.fromDate(DateTime.now()) &&
+                            element.get('startTime') == TimeOfDay.now().hour &&
+                            element.get('startMinute') ==
+                                TimeOfDay.now().minute &&
+                            element.get('votedOrNo') == false,
+                      )
+                      .id;
+                  print('index ' + selectedPoll);
+                  print(pollData.polls.first.id);
                 }
 
                 if (polls.any((element) =>
@@ -104,11 +120,12 @@ class SelectPoll extends StatelessWidget {
                               child: Center(
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    print(selectedPoll);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => LoginScreen(
-                                                  indexOfPoll: selectedPoll,
+                                                  iid: selectedPoll,
                                                 )));
                                   },
                                   child: Text('ВЕРЕТИФІКАЦІЯ'),

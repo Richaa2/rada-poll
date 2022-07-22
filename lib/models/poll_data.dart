@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:rada_poll/models/poll.dart';
 
 class PollData extends ChangeNotifier {
+  int waitOrClickOrStart = 1;
+  int clickYes = 0;
+  int clickNo = 0;
+  int clickHold = 0;
+  int seconds2 = 5;
+
   List<Poll> polls = [
     // Poll(
     //   id: 1,
@@ -42,6 +48,9 @@ class PollData extends ChangeNotifier {
     //   votedOrNo: true,
     // ),
   ];
+  // ..sort(
+  //     (a, b) => b.id.compareTo(a.id),
+  //   );
   DateTime selectedTime = DateTime.now();
   TimeOfDay selectedTime2 = TimeOfDay.now();
   DateTime selectedTime3 = DateTime.now();
@@ -55,6 +64,31 @@ class PollData extends ChangeNotifier {
   void changeTime(TimeOfDay selectedTime, TimeOfDay newSelectedTime) {
     selectedTime = newSelectedTime;
     notifyListeners();
+  }
+
+  int indexOf = 0;
+  void wtf() {
+    if (polls.any((element) =>
+        element.startTimestamp.toDate().day == DateTime.now().day &&
+        element.startTime == TimeOfDay.now().hour &&
+        element.startMinute == TimeOfDay.now().minute &&
+        element.votedOrNo == false)) {
+      print('lol');
+      var lol = polls.indexWhere((element) =>
+          element.startTimestamp.toDate().day == DateTime.now().day &&
+          element.startTime == TimeOfDay.now().hour &&
+          element.startMinute == TimeOfDay.now().minute &&
+          element.votedOrNo == false);
+      print('index' + lol.toString());
+      indexOf = lol;
+
+      // selectedPoll = pollsFire.indexWhere((element) =>
+      //     element.get('w') == Timestamp.fromDate(DateTime.now()) &&
+      //     element.get('startTime') == TimeOfDay.now().hour &&
+      //     element.get('startMinute') == TimeOfDay.now().minute &&
+      //     element.get('votedOrNo') == false);
+
+    }
   }
 
   // void createPoll(Poll poll) {
@@ -86,7 +120,11 @@ class PollData extends ChangeNotifier {
       "w": poll.startTimestamp,
       "startMinute": poll.startMinute,
       "votedOrNo": poll.votedOrNo,
-      "startTime": poll.startTime
+      "startTime": poll.startTime,
+      "yes": poll.yes,
+      "no": poll.no,
+      "hold": poll.hold,
+      "didNotVote": poll.didNotVote,
     });
 
     polls.add(poll);
@@ -101,7 +139,18 @@ class PollData extends ChangeNotifier {
         .collection('waitOrClickOrStart')
         .doc('1')
         .update(data);
+    waitOrClickOrStart = 2;
 
     notifyListeners();
+  }
+
+  void addVote(
+      AsyncSnapshot<QuerySnapshot<Object?>> snapshot2, int index, int click) {
+    var id = snapshot2.data!.docs[index].id;
+
+    FirebaseFirestore.instance
+        .collection('poll')
+        .doc(id)
+        .update({'yes': click});
   }
 }

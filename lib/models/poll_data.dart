@@ -5,16 +5,16 @@ import 'package:rada_poll/models/poll.dart';
 
 class PollData extends ChangeNotifier {
   List<Poll> polls = [
-    Poll(
-      id: 1,
-      question: 'Якась залупа буде писатись',
-      endDate: DateTime(2022, 9, 21).millisecondsSinceEpoch,
-      endTime: TimeOfDay(hour: 16, minute: 10).hour,
-      startTimestamp: Timestamp.fromDate(DateTime(2022, 8, 21)),
-      startTime: TimeOfDay(hour: 20, minute: 7).hour,
-      votedOrNo: false,
-      startMinute: 7,
-    ),
+    // Poll(
+    //   id: 1,
+    //   question: 'Якась залупа буде писатись',
+    //   endDate: DateTime(2022, 9, 21).millisecondsSinceEpoch,
+    //   endTime: TimeOfDay(hour: 16, minute: 10).hour,
+    //   startTimestamp: Timestamp.now(),
+    //   startTime: TimeOfDay.now().hour,
+    //   votedOrNo: false,
+    //   startMinute: TimeOfDay.now().minute,
+    // ),
     // Poll(
     //   id: 2,
     //   question: '2',
@@ -57,19 +57,19 @@ class PollData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void createPoll(Poll poll) {
-    polls.add(Poll(
-        id: poll.id,
-        question: poll.question,
-        endDate: poll.endDate,
-        endTime: poll.endTime,
-        // startDate: poll.startDate,
-        startTime: poll.startTime,
-        votedOrNo: false,
-        startMinute: poll.startMinute,
-        startTimestamp: poll.startTimestamp));
-    notifyListeners();
-  }
+  // void createPoll(Poll poll) {
+  //   polls.add(Poll(
+  //       id: poll.id,
+  //       question: poll.question,
+  //       endDate: poll.endDate,
+  //       endTime: poll.endTime,
+  //       // startDate: poll.startDate,
+  //       startTime: poll.startTime,
+  //       votedOrNo: false,
+  //       startMinute: poll.startMinute,
+  //       startTimestamp: poll.startTimestamp));
+  //   notifyListeners();
+  // }
 
   void changeDecision(Poll poll) {
     poll.changeDecision();
@@ -81,16 +81,26 @@ class PollData extends ChangeNotifier {
       "decision": poll.decision,
       "endDate": poll.endDate,
       "endTime": poll.endTime,
-      "id": poll.id,
+      "id": polls.length + 1,
       "question": poll.question,
-      // "startDate": poll.startDate,
-      // "startTime": poll.startTime,
       "w": poll.startTimestamp,
       "startMinute": poll.startMinute,
       "votedOrNo": poll.votedOrNo,
+      "startTime": poll.startTime
     });
 
     polls.add(poll);
+
+    notifyListeners();
+  } // "startDate": poll.startDate,
+  // "startTime": poll.startTime,
+
+  void updateWait() {
+    final data = {'waitOrClickOrStart': 2};
+    FirebaseFirestore.instance
+        .collection('waitOrClickOrStart')
+        .doc('1')
+        .update(data);
 
     notifyListeners();
   }

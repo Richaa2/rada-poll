@@ -65,7 +65,7 @@ class _DialogForAddState extends State<DialogForAdd> {
               ElevatedButton(
                   onPressed: () {
                     pollData.addPoll(Poll(
-                      id: pollData.polls.last.id + 1,
+                      id: 1,
                       question: questioninput,
                       endDate: pollData.selectedTime.millisecondsSinceEpoch,
                       endTime: pollData.selectedTime2.hour,

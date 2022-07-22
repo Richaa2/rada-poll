@@ -35,17 +35,14 @@ class LoginScreen extends StatelessWidget {
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text('Веддіть код '),
               Container(
-
                 width: 100,
                 height: 30,
                 child: TextFormField(
                   autofocus: true,
-
                   keyboardType: TextInputType.number,
                   controller: _controller,
                   onChanged: (inputCode) {
                     code = inputCode;
-
                   },
                 ),
               ),
@@ -66,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => PollScreen(
-                                    indexOfPoll: indexOfPoll,
+                                    indexOfPoll: 0,
                                   )));
                     }
                     if (code.contains('111')) {
@@ -102,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => PollScreen(
-                                    indexOfPoll: indexOfPoll,
+                                    indexOfPoll: 1,
                                   )));
                     }
                   },

@@ -6,6 +6,7 @@ import 'package:rada_poll/archive.dart';
 import 'package:rada_poll/models/poll_data.dart';
 import 'package:rada_poll/poll_screen.dart';
 import 'package:rada_poll/select_poll.dart';
+import 'package:rada_poll/test_screen.dart';
 
 import 'login_screen.dart';
 import 'main_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
               // '/': (context) => PollScreen(
               //       indexOfPoll: 2,
               //     ),
-              '/': (context) => MainPage(),
+              '/': (context) => TestScreen(),
               '/Archive': ((context) => ArchiveScreen()),
               '/Add': ((context) => AddPollScreen()),
               // '/Poll': ((context) => PollScreen(indexOfPoll: null,)),

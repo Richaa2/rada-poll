@@ -16,6 +16,7 @@ const kTextStyle = TextStyle(
   color: Colors.grey,
   fontSize: 22,
 );
+bool startedPollForModal = false;
 bool startedPoll = false;
 
 class PollScreen extends StatefulWidget {
@@ -159,8 +160,8 @@ class _PollScreenState extends State<PollScreen> {
                           if (seconds == 0) {
                             seconds = 10;
                             print('seconds' + seconds.toString());
-                            startedPoll = false;
-                            print(startedPoll);
+                            startedPollForModal = false;
+                            print(startedPollForModal);
                             FirebaseFirestore.instance
                                 .collection('waitOrClickOrStart')
                                 .doc('1')
@@ -320,6 +321,8 @@ class _PollScreenState extends State<PollScreen> {
                                                                         1) {
                                                                       setState(
                                                                           () {
+                                                                        startedPoll =
+                                                                            true;
                                                                         FirebaseFirestore
                                                                             .instance
                                                                             .collection(

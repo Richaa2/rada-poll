@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +16,12 @@ class DialogForAdd extends StatefulWidget {
 }
 
 class _DialogForAddState extends State<DialogForAdd> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   String questioninput = '';
   TimeOfDay Time = TimeOfDay.now();
   DateTime dateTime = DateTime.now();
@@ -28,12 +36,22 @@ class _DialogForAddState extends State<DialogForAdd> {
       ),
       child: SingleChildScrollView(
         child: AlertDialog(
-          title: Center(child: Text('Create Poll')),
+          title: Center(
+              child: Text(
+            'Створіть Голосування',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          )),
           content: Consumer<PollData>(
             builder: (context, pollData, child) =>
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text('Question'),
+              Text(
+                'Введіть назву',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               TextFormField(
+                // inputFormatters: [
+                //   FilteringTextInputFormatter.allow(RegExp("^[а-яА-Я]+\$"))
+                // ],
                 controller: _controller,
                 maxLength: 50,
                 maxLines: 2,
@@ -46,36 +64,59 @@ class _DialogForAddState extends State<DialogForAdd> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _selectDate(context);
+                      setState(() {
+                        _selectDate(context);
+                      });
                     },
-                    child: Text("Choose date"),
+                    child: Text(
+                      "Виберіть час",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _selectTime(context);
+                      setState(() {
+                        _selectTime(context);
+                      });
                     },
-                    child: Text("Choose time"),
+                    child: Text(
+                      "Виберіть дату",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),
-              Text("mouth: ${dateTime.month}    day:${dateTime.day}"),
               Text(
-                  "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}"),
+                "mouth: ${dateTime.month}    day:${dateTime.day}",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              Text(
+                "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
               ElevatedButton(
                   onPressed: () {
-                    pollData.createPoll(Poll(
-                      id: pollData.polls.last.id + 1,
+                    Navigator.pop(
+                      context,
+                    );
+                    pollData.addPoll(Poll(
+                      id: pollData.polls.length,
                       question: questioninput,
-                      endDate: pollData.selectedTime,
-                      endTime: pollData.selectedTime2,
-                      startDate: dateTime,
-                      startTime: Time,
+                      // endDate: pollData.selectedTime.millisecondsSinceEpoch,
+                      // endTime: pollData.selectedTime2.hour,
+                      // startDate: dateTime.millisecondsSinceEpoch,
+                      startTime: Time.hour,
+                      startMinute: Time.minute,
                       votedOrNo: false,
+                      startTimestamp: Timestamp.fromDate(dateTime),
                     ));
-                    Navigator.pop(context);
+
                     // Navigator.popAndPushNamed(context, '/SelectPoll');
                   },
-                  child: Text('Добавити')),
+                  child: Text(
+                    'Добавити',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  )),
             ]),
           ),
         ),

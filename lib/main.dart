@@ -29,10 +29,8 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             initialRoute: '/',
             routes: {
-              // '/': (context) => PollScreen(
-              //       indexOfPoll: 2,
-              //     ),
-              '/': (context) => PollScreen(indexOfPoll: 'FjX7SEzH4x2ufSUkoOc8'),
+              '/': (context) => MainPage(),
+              // '/': (context) => PollScreen(indexOfPoll: '5EiELmmP7rQqICUZovLJ'),
               '/Archive': ((context) => ArchiveScreen()),
               '/Add': ((context) => AddPollScreen()),
               // '/Poll': ((context) => PollScreen(indexOfPoll: null,)),

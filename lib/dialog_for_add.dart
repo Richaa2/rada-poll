@@ -15,6 +15,12 @@ class DialogForAdd extends StatefulWidget {
 }
 
 class _DialogForAddState extends State<DialogForAdd> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   String questioninput = '';
   TimeOfDay Time = TimeOfDay.now();
   DateTime dateTime = DateTime.now();
@@ -47,13 +53,17 @@ class _DialogForAddState extends State<DialogForAdd> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _selectDate(context);
+                      setState(() {
+                        _selectDate(context);
+                      });
                     },
                     child: Text("Choose date"),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _selectTime(context);
+                      setState(() {
+                        _selectTime(context);
+                      });
                     },
                     child: Text("Choose time"),
                   ),
@@ -64,18 +74,21 @@ class _DialogForAddState extends State<DialogForAdd> {
                   "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}"),
               ElevatedButton(
                   onPressed: () {
+                    Navigator.pop(
+                      context,
+                    );
                     pollData.addPoll(Poll(
-                      id: 1,
+                      id: pollData.polls.length,
                       question: questioninput,
-                      endDate: pollData.selectedTime.millisecondsSinceEpoch,
-                      endTime: pollData.selectedTime2.hour,
+                      // endDate: pollData.selectedTime.millisecondsSinceEpoch,
+                      // endTime: pollData.selectedTime2.hour,
                       // startDate: dateTime.millisecondsSinceEpoch,
                       startTime: Time.hour,
                       startMinute: Time.minute,
                       votedOrNo: false,
                       startTimestamp: Timestamp.fromDate(dateTime),
                     ));
-                    Navigator.pop(context);
+
                     // Navigator.popAndPushNamed(context, '/SelectPoll');
                   },
                   child: Text('Добавити')),

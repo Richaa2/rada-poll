@@ -9,13 +9,12 @@ class PollData extends ChangeNotifier {
   int clickNo = 0;
   int clickHold = 0;
   int seconds2 = 5;
+  bool haveOrNo = false;
 
   List<Poll> polls = [
     // Poll(
     //   id: 1,
     //   question: 'Якась залупа буде писатись',
-    //   endDate: DateTime(2022, 9, 21).millisecondsSinceEpoch,
-    //   endTime: TimeOfDay(hour: 16, minute: 10).hour,
     //   startTimestamp: Timestamp.now(),
     //   startTime: TimeOfDay.now().hour,
     //   votedOrNo: false,
@@ -66,30 +65,30 @@ class PollData extends ChangeNotifier {
     notifyListeners();
   }
 
-  int indexOf = 0;
-  void wtf() {
-    if (polls.any((element) =>
-        element.startTimestamp.toDate().day == DateTime.now().day &&
-        element.startTime == TimeOfDay.now().hour &&
-        element.startMinute == TimeOfDay.now().minute &&
-        element.votedOrNo == false)) {
-      print('lol');
-      var lol = polls.indexWhere((element) =>
-          element.startTimestamp.toDate().day == DateTime.now().day &&
-          element.startTime == TimeOfDay.now().hour &&
-          element.startMinute == TimeOfDay.now().minute &&
-          element.votedOrNo == false);
-      print('index' + lol.toString());
-      indexOf = lol;
+  // int indexOf = 0;
+  // void wtf() {
+  //   if (polls.any((element) =>
+  //       element.startTimestamp.toDate().day == DateTime.now().day &&
+  //       element.startTime == TimeOfDay.now().hour &&
+  //       element.startMinute == TimeOfDay.now().minute &&
+  //       element.votedOrNo == false)) {
+  //     print('lol');
+  //     var lol = polls.indexWhere((element) =>
+  //         element.startTimestamp.toDate().day == DateTime.now().day &&
+  //         element.startTime == TimeOfDay.now().hour &&
+  //         element.startMinute == TimeOfDay.now().minute &&
+  //         element.votedOrNo == false);
+  //     print('index' + lol.toString());
+  //     indexOf = lol;
 
-      // selectedPoll = pollsFire.indexWhere((element) =>
-      //     element.get('w') == Timestamp.fromDate(DateTime.now()) &&
-      //     element.get('startTime') == TimeOfDay.now().hour &&
-      //     element.get('startMinute') == TimeOfDay.now().minute &&
-      //     element.get('votedOrNo') == false);
+  //     // selectedPoll = pollsFire.indexWhere((element) =>
+  //     //     element.get('w') == Timestamp.fromDate(DateTime.now()) &&
+  //     //     element.get('startTime') == TimeOfDay.now().hour &&
+  //     //     element.get('startMinute') == TimeOfDay.now().minute &&
+  //     //     element.get('votedOrNo') == false);
 
-    }
-  }
+  //   }
+  // }
 
   // void createPoll(Poll poll) {
   //   polls.add(Poll(
@@ -110,21 +109,41 @@ class PollData extends ChangeNotifier {
     notifyListeners();
   }
 
+  // void addFirstPoll() {
+  //   FirebaseFirestore.instance.collection('poll').add({
+  //     "decision": false,
+  //     "didNotVote": false,
+  //     "endDate": DateTime.now(),
+  //     // "endTime": poll.endTime,
+  //     "hold": 0,
+  //     "id": 0,
+  //     "no": 0,
+  //     "question": '',
+  //     "startMinute": TimeOfDay.now().minute,
+  //     "startTime": DateTime.now(),
+  //     "votedOrNo": false,
+  //     "w": Timestamp.now(),
+  //     "yes": 0,
+  //   });
+
+  //   notifyListeners();
+  // }
+
   void addPoll(Poll poll) {
     FirebaseFirestore.instance.collection('poll').add({
       "decision": poll.decision,
-      "endDate": poll.endDate,
-      "endTime": poll.endTime,
-      "id": polls.length + 1,
-      "question": poll.question,
-      "w": poll.startTimestamp,
-      "startMinute": poll.startMinute,
-      "votedOrNo": poll.votedOrNo,
-      "startTime": poll.startTime,
-      "yes": poll.yes,
-      "no": poll.no,
-      "hold": poll.hold,
       "didNotVote": poll.didNotVote,
+      // "endDate": poll.endDate,
+      // "endTime": poll.endTime,
+      "hold": poll.hold,
+      "id": poll.id,
+      "no": poll.no,
+      "question": poll.question,
+      "startMinute": poll.startMinute,
+      "startTime": poll.startTime,
+      "votedOrNo": poll.votedOrNo,
+      "w": poll.startTimestamp,
+      "yes": poll.yes,
     });
 
     polls.add(poll);

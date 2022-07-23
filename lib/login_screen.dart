@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:rada_poll/models/poll_data.dart';
 
 import 'package:rada_poll/poll_screen.dart';
 
@@ -39,11 +41,18 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Веддіть код '),
+                          Text(
+                            'Веддіть код ',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
                           Container(
                             width: 100,
                             height: 30,
                             child: TextFormField(
+                              style: TextStyle(color: Colors.white),
                               autofocus: true,
                               keyboardType: TextInputType.number,
                               controller: _controller,
@@ -66,7 +75,12 @@ class LoginScreen extends StatelessWidget {
                                   } catch (e) {
                                     print(e);
                                   }
-                                  Navigator.push(
+                                  // Navigator.of(context).pushAndRemoveUntil(
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => PollScreen(
+                                  //             indexOfPoll: indexOfPoll)),
+                                  //     (Route<dynamic> route) => false);
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PollScreen(
@@ -84,6 +98,8 @@ class LoginScreen extends StatelessWidget {
                                         .update(data);
                                     print(users);
                                   }
+                                  Provider.of<PollData>(context, listen: false)
+                                      .haveOrNo = false;
                                 }
                                 if (code.contains('111')) {
                                   try {
@@ -97,7 +113,7 @@ class LoginScreen extends StatelessWidget {
                                   } catch (e) {
                                     print(e);
                                   }
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PollScreen(
@@ -128,7 +144,7 @@ class LoginScreen extends StatelessWidget {
                                   } catch (e) {
                                     print(e);
                                   }
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PollScreen(
@@ -148,7 +164,7 @@ class LoginScreen extends StatelessWidget {
                                   }
                                 }
                               },
-                              child: Text('Click'))
+                              child: Text('Нажміть'))
                         ]),
                   ),
                 ),

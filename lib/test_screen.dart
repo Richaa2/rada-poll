@@ -32,6 +32,16 @@ class TestScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Text('Rich'),
+                      AnimatedContainer(
+                        duration: Duration(seconds: 10),
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            image: DecorationImage(
+                                image: AssetImage('assets/images/3.jpg'),
+                                fit: BoxFit.fill)),
+                      ),
                       Row(
                         children: [
                           Expanded(

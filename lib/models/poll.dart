@@ -5,10 +5,10 @@ import 'package:flutter_polls/flutter_polls.dart';
 class Poll {
   int id;
   String question;
-  int endDate = DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day + 1)
-      .millisecondsSinceEpoch;
-  int endTime = TimeOfDay(hour: 0, minute: 0).hour;
+  // int endDate = DateTime(
+  //         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1)
+  //     .millisecondsSinceEpoch;
+  // int endTime = TimeOfDay(hour: 0, minute: 0).hour;
   Timestamp startTimestamp;
   // int startDate;
   int startTime;
@@ -49,8 +49,8 @@ class Poll {
   Poll({
     required this.id,
     required this.question,
-    required this.endDate,
-    required this.endTime,
+    // required this.endDate,
+    // required this.endTime,
     // required this.startDate,
     required this.startTime,
     this.votedOrNo = false,

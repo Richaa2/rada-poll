@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               // '/': (context) => PollScreen(
               //       indexOfPoll: 2,
               //     ),
-              '/': (context) => MainPage(),
+              '/': (context) => PollScreen(indexOfPoll: 'FjX7SEzH4x2ufSUkoOc8'),
               '/Archive': ((context) => ArchiveScreen()),
               '/Add': ((context) => AddPollScreen()),
               // '/Poll': ((context) => PollScreen(indexOfPoll: null,)),

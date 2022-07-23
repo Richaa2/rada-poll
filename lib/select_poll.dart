@@ -11,7 +11,6 @@ import 'models/poll.dart';
 
 class SelectPoll extends StatelessWidget {
   SelectPoll({Key? key}) : super(key: key);
-  bool haveOrNo = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +25,6 @@ class SelectPoll extends StatelessWidget {
           return Consumer<PollData>(
             builder: (context, pollData, child) {
               if (snapshot.hasData) {
-                var pollsFire = snapshot.data!.docs;
-                var polls = pollData.polls;
-
                 // ..sort(((a, b) => b.id.compareTo(a.id)));
 
                 // if (polls.isEmpty) {
@@ -49,15 +45,21 @@ class SelectPoll extends StatelessWidget {
                 //     }
                 //   }
                 // }
+                Timestamp a;
+                print('selected Screen');
+                var pollsFire = snapshot.data!.docs;
+                var polls = pollData.polls;
+                String selectedPoll = '';
+                var numberPoll = 0;
 
-                late String selectedPoll;
-                if (polls.any((element) =>
-                    element.startTimestamp.toDate().day == DateTime.now().day &&
-                    element.startTime == TimeOfDay.now().hour &&
-                    element.startMinute == TimeOfDay.now().minute &&
-                    element.votedOrNo == false)) {
-                  print('lol');
-                  haveOrNo = true;
+                if (pollsFire.any((element) =>
+                    element.get('votedOrNo') == false &&
+                    element.get('startTime') == TimeOfDay.now().hour &&
+                    element.get('startMinute') == TimeOfDay.now().minute)) {
+                  print('Selected Widget');
+
+                  pollData.haveOrNo = true;
+
                   // selectedPoll = polls.indexWhere((element) =>
                   //     element.startTimestamp.toDate().day ==
                   //         DateTime.now().day &&
@@ -66,18 +68,22 @@ class SelectPoll extends StatelessWidget {
                   //     element.votedOrNo == false);
 
                   selectedPoll = pollsFire
-                      .firstWhere(
-                        (element) =>
-                            // element.get('w') ==
-                            //     Timestamp.fromDate(DateTime.now()) &&
-                            element.get('startTime') == TimeOfDay.now().hour &&
-                            element.get('startMinute') ==
-                                TimeOfDay.now().minute &&
-                            element.get('votedOrNo') == false,
-                      )
+                      .firstWhere((element) =>
+                          // element.get('w') ==
+                          //     Timestamp.fromDate(DateTime.now()) &&
+                          element.get('votedOrNo') == false &&
+                          element.get('startTime') == TimeOfDay.now().hour &&
+                          element.get('startMinute') == TimeOfDay.now().minute)
                       .id;
+                  numberPoll = snapshot.data!.docs
+                      .singleWhere((element) => element.id == selectedPoll)
+                      .get('id');
+                  ;
                   print('index ' + selectedPoll);
                   print(pollData.polls.first.id);
+                } else {
+                  pollData.haveOrNo = false;
+                  print('Faalse have or not');
                 }
 
                 if (polls.any((element) =>
@@ -85,7 +91,7 @@ class SelectPoll extends StatelessWidget {
                     element.startTime != TimeOfDay.now().hour &&
                     element.votedOrNo != false)) {
                   print('False');
-                  haveOrNo = false;
+                  pollData.haveOrNo = false;
                 }
                 return Container(
                   child: Scaffold(
@@ -93,7 +99,7 @@ class SelectPoll extends StatelessWidget {
                         title: Text('Select poll'),
                         centerTitle: true,
                       ),
-                      body: haveOrNo == false
+                      body: pollData.haveOrNo == false
                           ? Container(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -104,8 +110,13 @@ class SelectPoll extends StatelessWidget {
                                 ),
                               ),
                               child: Center(
-                                child:
-                                    Text('Sorry but not have poll right now'),
+                                child: Text(
+                                  'На даний момент немає голосування',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             )
                           : Container(
@@ -117,19 +128,41 @@ class SelectPoll extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              child: Center(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    print(selectedPoll);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginScreen(
-                                                  iid: selectedPoll,
-                                                )));
-                                  },
-                                  child: Text('ВЕРЕТИФІКАЦІЯ'),
-                                ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Spacer(
+                                    flex: 1,
+                                  ),
+                                  Text(
+                                    'Голосування номер $numberPoll',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Spacer(
+                                    flex: 1,
+                                  ),
+                                  Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        print(selectedPoll);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginScreen(
+                                                      iid: selectedPoll,
+                                                    )));
+                                      },
+                                      child: Text('ВЕРЕТИФІКАЦІЯ'),
+                                    ),
+                                  ),
+                                  Spacer(
+                                    flex: 2,
+                                  ),
+                                ],
                               ),
                             )),
                 );

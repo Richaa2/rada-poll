@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polls/flutter_polls.dart';
 import 'package:provider/provider.dart';
+import 'package:rada_poll/main_page.dart';
 
 import 'package:rada_poll/models/poll.dart';
 import 'package:rada_poll/models/poll_data.dart';
@@ -41,21 +42,6 @@ class _PollScreenState extends State<PollScreen> {
     super.initState();
     seconds = 10;
     // seconds2 = 5;
-  }
-
-  void startTimer() {
-    timer1 = Timer.periodic(Duration(seconds: 1), (timer1) {
-      setState(() {
-        seconds--;
-        print(seconds);
-      });
-    });
-  }
-
-  void pauseTimer1() {
-    setState(() {
-      timer1?.cancel();
-    });
   }
 
   void pauseTimer2() {
@@ -105,10 +91,14 @@ class _PollScreenState extends State<PollScreen> {
                     builder: (context, snapshot3) {
                       return Consumer<PollData>(builder:
                           (BuildContext context, pollData, Widget? child) {
+                        void pauseTimer1() {
+                          timer1?.cancel();
+                        }
+
                         if (snapshot3.hasData &&
                             snapshot2.hasData &&
                             snapshot.hasData) {
-                          print('12312313');
+                          print('snapshot has data');
                           var wait = pollData.waitOrClickOrStart;
                           var people = snapshot3.data!.docs
                               .firstWhere((element) => element.id == '1')
@@ -156,6 +146,15 @@ class _PollScreenState extends State<PollScreen> {
                           // }
 
                           // if (seconds2 >= 6) {}
+                          void startTimer() {
+                            timer1 =
+                                Timer.periodic(Duration(seconds: 1), (timer1) {
+                              setState(() {
+                                seconds--;
+                                print(seconds);
+                              });
+                            });
+                          }
 
                           if (seconds == 0) {
                             seconds = 10;
@@ -166,17 +165,18 @@ class _PollScreenState extends State<PollScreen> {
                                 .collection('waitOrClickOrStart')
                                 .doc('1')
                                 .update({'waitOrClickOrStart': 4});
+                            pauseTimer1();
                           }
 
                           if (waitOrClickOrStartFirebase == 2) {
                             pollData.waitOrClickOrStart = 2;
                           }
-                          if (waitOrClickOrStartFirebase == 3) {
-                            pollData.waitOrClickOrStart = 3;
-                          }
-                          if (waitOrClickOrStartFirebase == 4) {
-                            pollData.waitOrClickOrStart = 4;
-                          }
+                          // if (waitOrClickOrStartFirebase == 3) {
+                          //   pollData.waitOrClickOrStart = 3;
+                          // }
+                          // if (waitOrClickOrStartFirebase == 4) {
+                          //   pollData.waitOrClickOrStart = 4;
+                          // }
 
                           // final poll = pollData.polls[widget.indexOfPoll];
 
@@ -185,315 +185,424 @@ class _PollScreenState extends State<PollScreen> {
                           //   poll.endDate.month,
                           //   poll.endDate.day,
                           // )
-                          //     .difference(DateTime(
-                          //       DateTime.now().year,
-                          //       DateTime.now().month,
-                          //       DateTime.now().day,
-                          //     ))
+                          // .difference(DateTime(
+                          //   DateTime.now().year,
+                          //   DateTime.now().month,
+                          //   DateTime.now().day,
+                          // ))
                           //     .inDays;
 
                           // TODO users logined
+                          pollData.haveOrNo = false;
                           return Scaffold(
-                            body: Container(
-                              decoration: waitOrClickOrStartFirebase < 4
-                                  ? BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.blue,
-                                          Color.fromARGB(255, 212, 140, 32)
-                                        ],
-                                      ),
-                                    )
-                                  : BoxDecoration(color: Colors.black),
-                              child: Center(
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height,
-                                  padding: const EdgeInsets.all(20),
-                                  child: Center(
-                                      child: waitOrClickOrStartFirebase == 1
-                                          ? Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Spacer(
-                                                  flex: 3,
-                                                ),
-                                                // Text(
-                                                //     'Часу до початку голосування  ${seconds2} хв ',
-                                                //     style: TextStyle(
-                                                //         color: Colors.white,
-                                                //         fontSize: 30,
-                                                //         fontWeight: FontWeight.w700)),
-                                                Spacer(
-                                                  flex: 2,
-                                                ),
-                                                Text('зайшло $people',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                                Spacer(
-                                                  flex: 3,
-                                                ),
+                            body: waitOrClickOrStartFirebase == 3
+                                ? TestScreen(
+                                    index: widget.indexOfPoll,
+                                  )
+                                : Container(
+                                    decoration: waitOrClickOrStartFirebase < 4
+                                        ? BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.blue,
+                                                Color.fromARGB(
+                                                    255, 212, 140, 32)
                                               ],
-                                            )
-                                          : waitOrClickOrStartFirebase == 2
-                                              ? Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                    Text(
-                                                      question,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                    ElevatedButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'waitOrClickOrStart')
-                                                                .doc('1')
-                                                                .update({
-                                                              'waitOrClickOrStart':
-                                                                  3
-                                                            });
-
-                                                            wait = 3;
-                                                            startTimer();
-                                                            print(wait);
-                                                          });
-
-                                                          final player =
-                                                              AudioCache();
-                                                          player.play('2.mp3');
-                                                        },
-                                                        child: Text(
-                                                          'ПОЧАТИ ГОЛОСУВАННЯ',
-                                                        )),
-                                                    Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                  ],
-                                                )
-                                              : waitOrClickOrStartFirebase == 3
-                                                  ? TestScreen(
-                                                      index: widget.indexOfPoll,
-                                                    )
-                                                  : Column(
+                                            ),
+                                          )
+                                        : BoxDecoration(color: Colors.black),
+                                    child: Center(
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          padding: const EdgeInsets.all(20),
+                                          child: Center(
+                                              child: waitOrClickOrStartFirebase ==
+                                                      1
+                                                  ? Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .stretch,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        Text(
-                                                          'ПІДСУМКИ ГОЛОСУВАННЯ',
-                                                          style: kTextStyle,
-                                                          textAlign:
-                                                              TextAlign.start,
+                                                        Spacer(
+                                                          flex: 3,
                                                         ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Flexible(
-                                                              flex: 6,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text('ЗА',
-                                                                      style:
-                                                                          kTextStyle),
-                                                                  Text('ПРОТИ',
-                                                                      style:
-                                                                          kTextStyle),
-                                                                  Text(
-                                                                      'УТРИМАЛИСЬ',
-                                                                      style:
-                                                                          kTextStyle),
-                                                                  Text(
-                                                                    'НЕ ГОЛОСУВАЛО',
-                                                                    style:
-                                                                        kTextStyle,
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                  Text(
-                                                                    'ВСЬОГО',
-                                                                    style:
-                                                                        kTextStyle,
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Spacer(
-                                                              flex: 1,
-                                                            ),
-                                                            Flexible(
-                                                              flex: 3,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                      (yesOld
-                                                                          .toString()),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .green,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      noOld
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .red,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      holdOld
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .yellow,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      didNotVote
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .teal,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      people
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Spacer(
-                                                              flex: 2,
-                                                            )
-                                                          ],
+                                                        // Text(
+                                                        //     'Часу до початку голосування  ${seconds2} хв ',
+                                                        //     style: TextStyle(
+                                                        //         color: Colors.white,
+                                                        //         fontSize: 30,
+                                                        //         fontWeight: FontWeight.w700)),
+                                                        Spacer(
+                                                          flex: 2,
                                                         ),
-                                                        SizedBox(
-                                                          height: 15,
-                                                        ),
-                                                        Text('РІШЕННЯ ПРИЙНЯТО',
+                                                        Text('зайшло $people',
                                                             style: TextStyle(
-                                                              color:
-                                                                  Colors.green,
-                                                              fontSize: 22,
-                                                            )),
-                                                        SizedBox(
-                                                          height: 100,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 30,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700)),
+                                                        Spacer(
+                                                          flex: 3,
                                                         ),
-                                                        ElevatedButton(
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty.all(Colors
-                                                                      .blueGrey
-                                                                      .withOpacity(
-                                                                          0.5)),
-                                                            ),
-                                                            onPressed: () {
-                                                              if (yesOld >
-                                                                  noOld +
-                                                                      holdOld) {
-                                                                // poll.changeDecision();
-                                                              } else {
-                                                                // poll.decision = false;
-                                                              }
-
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'waitOrClickOrStart')
-                                                                  .doc('1')
-                                                                  .update({
-                                                                'waitOrClickOrStart':
-                                                                    2
-                                                              });
-
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'users')
-                                                                  .doc('1')
-                                                                  .update({
-                                                                'amount': 0
-                                                              });
-
-                                                              FirebaseAuth
-                                                                  .instance
-                                                                  .signOut();
-                                                              Navigator.popUntil(
-                                                                  context,
-                                                                  ModalRoute
-                                                                      .withName(
-                                                                          '/'));
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'poll')
-                                                                  .doc(widget
-                                                                      .indexOfPoll)
-                                                                  .update({
-                                                                'votedOrNo':
-                                                                    true
-                                                              });
-                                                              // poll.votedOrNo = true;
-                                                              wait = 1;
-                                                              Provider.of<PollData>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .seconds2 = 5;
-                                                            },
-                                                            child: Text(
-                                                              'завершити',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .yellow),
-                                                            ))
                                                       ],
-                                                    )),
-                                ),
-                              ),
-                            ),
+                                                    )
+                                                  : waitOrClickOrStartFirebase ==
+                                                          2
+                                                      ? SafeArea(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                  'зайшло $people',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          30,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700)),
+                                                              Spacer(
+                                                                flex: 1,
+                                                              ),
+                                                              Text(
+                                                                question,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Spacer(
+                                                                flex: 1,
+                                                              ),
+                                                              ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                      primary: people >= 2
+                                                                          ? Colors
+                                                                              .green
+                                                                          : Colors
+                                                                              .grey),
+                                                                  onPressed:
+                                                                      () {
+                                                                    final snackBar =
+                                                                        SnackBar(
+                                                                      content:
+                                                                          const Text(
+                                                                              'Недостатня кількість депутатів'),
+                                                                      action:
+                                                                          SnackBarAction(
+                                                                        label:
+                                                                            'Закрити',
+                                                                        onPressed:
+                                                                            () {
+                                                                          // Some code to undo the change.
+                                                                        },
+                                                                      ),
+                                                                    );
+
+                                                                    // Find the ScaffoldMessenger in the widget tree
+                                                                    // and use it to show a SnackBar.
+
+                                                                    if (people >=
+                                                                        1) {
+                                                                      setState(
+                                                                          () {
+                                                                        FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(
+                                                                                'waitOrClickOrStart')
+                                                                            .doc(
+                                                                                '1')
+                                                                            .update({
+                                                                          'waitOrClickOrStart':
+                                                                              3
+                                                                        });
+
+                                                                        wait =
+                                                                            3;
+                                                                        startTimer();
+                                                                        print(
+                                                                            wait);
+                                                                      });
+
+                                                                      final player =
+                                                                          AudioCache();
+                                                                      player.play(
+                                                                          '2.mp3');
+                                                                    } else {
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                              snackBar);
+                                                                    }
+                                                                  },
+                                                                  child: Text(
+                                                                    'ПОЧАТИ ГОЛОСУВАННЯ',
+                                                                    style:
+                                                                        TextStyle(),
+                                                                  )),
+                                                              Spacer(
+                                                                flex: 1,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : waitOrClickOrStartFirebase ==
+                                                              4
+                                                          ? Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  'ПІДСУМКИ ГОЛОСУВАННЯ',
+                                                                  style:
+                                                                      kTextStyle,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .start,
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Flexible(
+                                                                      flex: 6,
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.end,
+                                                                        children: [
+                                                                          Text(
+                                                                              'ЗА',
+                                                                              style: kTextStyle),
+                                                                          Text(
+                                                                              'ПРОТИ',
+                                                                              style: kTextStyle),
+                                                                          Text(
+                                                                              'УТРИМАЛИСЬ',
+                                                                              style: kTextStyle),
+                                                                          Text(
+                                                                            'НЕ ГОЛОСУВАЛО',
+                                                                            style:
+                                                                                kTextStyle,
+                                                                            maxLines:
+                                                                                1,
+                                                                          ),
+                                                                          Text(
+                                                                            'ВСЬОГО',
+                                                                            style:
+                                                                                kTextStyle,
+                                                                            maxLines:
+                                                                                1,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    Spacer(
+                                                                      flex: 1,
+                                                                    ),
+                                                                    Flexible(
+                                                                      flex: 3,
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.end,
+                                                                        children: [
+                                                                          Text(
+                                                                              (yesOld.toString()),
+                                                                              style: TextStyle(
+                                                                                color: Colors.green,
+                                                                                fontSize: 22,
+                                                                              )),
+                                                                          Text(
+                                                                              noOld.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Colors.red,
+                                                                                fontSize: 22,
+                                                                              )),
+                                                                          Text(
+                                                                              holdOld.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Colors.yellow,
+                                                                                fontSize: 22,
+                                                                              )),
+                                                                          Text(
+                                                                              didNotVote.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Colors.teal,
+                                                                                fontSize: 22,
+                                                                              )),
+                                                                          Text(
+                                                                              people.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Colors.grey,
+                                                                                fontSize: 22,
+                                                                              )),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    Spacer(
+                                                                      flex: 2,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                Text(
+                                                                    yesOld >
+                                                                            noOld +
+                                                                                holdOld
+                                                                        ? 'РІШЕННЯ ПРИЙНЯТО'
+                                                                        : 'РІШЕННЯ НЕ ПРИЙНЯТО',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: yesOld >
+                                                                              noOld +
+                                                                                  holdOld
+                                                                          ? Colors
+                                                                              .green
+                                                                          : Colors
+                                                                              .red,
+                                                                      fontSize:
+                                                                          22,
+                                                                    )),
+                                                                SizedBox(
+                                                                  height: 100,
+                                                                ),
+                                                                ElevatedButton(
+                                                                    style:
+                                                                        ButtonStyle(
+                                                                      backgroundColor: MaterialStateProperty.all(Colors
+                                                                          .blueGrey
+                                                                          .withOpacity(
+                                                                              0.5)),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'poll')
+                                                                          .doc(widget
+                                                                              .indexOfPoll)
+                                                                          .update({
+                                                                        'votedOrNo':
+                                                                            true
+                                                                      });
+                                                                      if (yesOld >
+                                                                          noOld +
+                                                                              holdOld) {
+                                                                        FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(
+                                                                                'poll')
+                                                                            .doc(widget
+                                                                                .indexOfPoll)
+                                                                            .update({
+                                                                          'decision':
+                                                                              true
+                                                                        });
+                                                                        // poll.changeDecision();
+                                                                      } else {
+                                                                        FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(
+                                                                                'poll')
+                                                                            .doc(widget
+                                                                                .indexOfPoll)
+                                                                            .update({
+                                                                          'decision':
+                                                                              false
+                                                                        });
+                                                                        // poll.decision = false;
+                                                                      }
+
+                                                                      FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'users')
+                                                                          .doc(
+                                                                              '1')
+                                                                          .update({
+                                                                        'amount':
+                                                                            0
+                                                                      });
+
+                                                                      int index = snapshot2
+                                                                          .data!
+                                                                          .docs
+                                                                          .singleWhere((element) =>
+                                                                              element.id ==
+                                                                              widget.indexOfPoll)
+                                                                          .get('id');
+                                                                      pollData
+                                                                          .polls[index -
+                                                                              1]
+                                                                          .votedOrNo = true;
+                                                                      // MaterialPageRoute(
+                                                                      //     builder:
+                                                                      //         (context) =>
+                                                                      //             MainPage()),
+                                                                      // (Route<dynamic>
+                                                                      //         route) =>
+                                                                      //     false
+                                                                      // Navigator.popUntil(
+                                                                      //     context,
+                                                                      //     ModalRoute
+                                                                      //         .withName(
+                                                                      //             '/'));
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .popAndPushNamed(
+                                                                              '/');
+                                                                      FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'waitOrClickOrStart')
+                                                                          .doc(
+                                                                              '1')
+                                                                          .update({
+                                                                        'waitOrClickOrStart':
+                                                                            2
+                                                                      });
+                                                                      Provider.of<PollData>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .seconds2 = 5;
+                                                                      wait = 1;
+                                                                      FirebaseAuth
+                                                                          .instance
+                                                                          .signOut();
+
+                                                                      // poll.votedOrNo = true;
+                                                                    },
+                                                                    child: Text(
+                                                                      'завершити',
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.yellow),
+                                                                    ))
+                                                              ],
+                                                            )
+                                                          : Container())),
+                                    ),
+                                  ),
                           );
                         }
                         return Container();

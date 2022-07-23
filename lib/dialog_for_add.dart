@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
@@ -35,12 +36,22 @@ class _DialogForAddState extends State<DialogForAdd> {
       ),
       child: SingleChildScrollView(
         child: AlertDialog(
-          title: Center(child: Text('Create Poll')),
+          title: Center(
+              child: Text(
+            'Створіть Голосування',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          )),
           content: Consumer<PollData>(
             builder: (context, pollData, child) =>
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text('Question'),
+              Text(
+                'Введіть назву',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               TextFormField(
+                // inputFormatters: [
+                //   FilteringTextInputFormatter.allow(RegExp("^[а-яА-Я]+\$"))
+                // ],
                 controller: _controller,
                 maxLength: 50,
                 maxLines: 2,
@@ -57,7 +68,10 @@ class _DialogForAddState extends State<DialogForAdd> {
                         _selectDate(context);
                       });
                     },
-                    child: Text("Choose date"),
+                    child: Text(
+                      "Виберіть час",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -65,13 +79,21 @@ class _DialogForAddState extends State<DialogForAdd> {
                         _selectTime(context);
                       });
                     },
-                    child: Text("Choose time"),
+                    child: Text(
+                      "Виберіть дату",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),
-              Text("mouth: ${dateTime.month}    day:${dateTime.day}"),
               Text(
-                  "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}"),
+                "mouth: ${dateTime.month}    day:${dateTime.day}",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              Text(
+                "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
               ElevatedButton(
                   onPressed: () {
                     Navigator.pop(
@@ -91,7 +113,10 @@ class _DialogForAddState extends State<DialogForAdd> {
 
                     // Navigator.popAndPushNamed(context, '/SelectPoll');
                   },
-                  child: Text('Добавити')),
+                  child: Text(
+                    'Добавити',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  )),
             ]),
           ),
         ),

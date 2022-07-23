@@ -15,7 +15,10 @@ class MainPage extends StatelessWidget {
         drawer: DrawerWidget(),
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Poll rada'),
+          title: Text(
+            'Голосування Верховної Ради України',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+          ),
         ),
         body: Container(
           child: Stack(

@@ -20,7 +20,10 @@ class ArchiveScreen extends StatelessWidget {
         var poll = pollData.polls.where((element) => element.votedOrNo == true);
         return Scaffold(
           appBar: AppBar(
-            title: Text('Archive'),
+            title: Text(
+              'Минулі голосування',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
             actions: [
               IconButton(
                   onPressed: pollsEmpty

@@ -111,7 +111,10 @@ class AddPollScreen extends StatelessWidget {
                       },
                     )
                   ],
-                  title: Text('Create Poll'),
+                  title: Text(
+                    'Майбутні голосування',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                   centerTitle: true,
                 ),
                 body: Container(
@@ -208,12 +211,7 @@ class AddPollScreen extends StatelessWidget {
                 ),
               );
             }
-
-            return Center(
-                child: ElevatedButton(
-              onPressed: () {},
-              child: Text(''),
-            ));
+            return SizedBox();
           });
         });
   }

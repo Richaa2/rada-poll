@@ -96,7 +96,10 @@ class SelectPoll extends StatelessWidget {
                 return Container(
                   child: Scaffold(
                       appBar: AppBar(
-                        title: Text('Select poll'),
+                        title: Text(
+                          'Теперішні голосування',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
                         centerTitle: true,
                       ),
                       body: pollData.haveOrNo == false

@@ -16,7 +16,67 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key, this.indexOfPoll, required this.iid})
       : super(key: key);
   TextEditingController _controller = TextEditingController();
-  String code = '';
+
+  var currectCodes = {
+    'admin@gmail.com': '17159881',
+    '1@gmail.com': '17151327',
+    '2@gmail.com': '17151488',
+    '3@gmail.com': '17152060',
+    '4@gmail.com': '17154513',
+  };
+  // '17159881',
+  // '17151327',
+  // '17151488',
+  // '17152060',
+  // '17154513',
+
+  void LoginVer(
+      final AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
+      final String inputCode,
+      final FirebaseAuth _auth,
+      final String iid,
+      BuildContext context) async {
+    if (currectCodes.values.any((element) => element == inputCode)) {
+      var mapEmail = currectCodes.entries
+          .firstWhere((element) => element.value == inputCode)
+          .key;
+      print(mapEmail);
+      try {
+        final existUser = await _auth.signInWithEmailAndPassword(
+            email: mapEmail, password: '123456');
+        if (existUser != null) {
+          Navigator.pushNamed(context, '/');
+        }
+      } catch (e) {
+        print(e);
+      }
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(
+      //         builder: (context) => PollScreen(
+      //             indexOfPoll: indexOfPoll)),
+      //     (Route<dynamic> route) => false);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PollScreen(
+                    indexOfPoll: iid,
+                  )));
+
+      var users = snapshot.data!.docs
+          .firstWhere((element) => element.id == '1')
+          .get('amount');
+      var data = {'amount': users + 1};
+      FirebaseFirestore.instance.collection('users').doc('1').update(data);
+      print(users);
+
+      Provider.of<PollData>(context, listen: false).haveOrNo = false;
+    }
+  }
+
+  String inputCode = '';
+
+  // bool currectCode = false;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -56,113 +116,19 @@ class LoginScreen extends StatelessWidget {
                               autofocus: true,
                               keyboardType: TextInputType.number,
                               controller: _controller,
-                              onChanged: (inputCode) {
-                                code = inputCode;
+                              onChanged: (innputCode) {
+                                inputCode = innputCode;
                               },
                             ),
                           ),
                           ElevatedButton(
-                              onPressed: () async {
-                                if (code.contains('12')) {
-                                  try {
-                                    final existUser =
-                                        await _auth.signInWithEmailAndPassword(
-                                            email: 'admin@gmail.com',
-                                            password: '123456');
-                                    if (existUser != null) {
-                                      Navigator.pushNamed(context, '/');
-                                    }
-                                  } catch (e) {
-                                    print(e);
-                                  }
-                                  // Navigator.of(context).pushAndRemoveUntil(
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => PollScreen(
-                                  //             indexOfPoll: indexOfPoll)),
-                                  //     (Route<dynamic> route) => false);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PollScreen(
-                                                indexOfPoll: iid,
-                                              )));
-                                  if (snapshot.hasData) {
-                                    var users = snapshot.data!.docs
-                                        .firstWhere(
-                                            (element) => element.id == '1')
-                                        .get('amount');
-                                    var data = {'amount': users + 1};
-                                    FirebaseFirestore.instance
-                                        .collection('users')
-                                        .doc('1')
-                                        .update(data);
-                                    print(users);
-                                  }
-                                  Provider.of<PollData>(context, listen: false)
-                                      .haveOrNo = false;
-                                }
-                                if (code.contains('111')) {
-                                  try {
-                                    final existUser =
-                                        await _auth.signInWithEmailAndPassword(
-                                            email: '1@gmail.com',
-                                            password: '123456');
-                                    if (existUser != null) {
-                                      Navigator.pushNamed(context, '/');
-                                    }
-                                  } catch (e) {
-                                    print(e);
-                                  }
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PollScreen(
-                                                indexOfPoll: iid,
-                                              )));
-                                  if (snapshot.hasData) {
-                                    var users = snapshot.data!.docs
-                                        .firstWhere(
-                                            (element) => element.id == '1')
-                                        .get('amount');
-                                    var data = {'amount': users + 1};
-                                    FirebaseFirestore.instance
-                                        .collection('users')
-                                        .doc('1')
-                                        .update(data);
-                                    print(users);
-                                  }
-                                }
-                                if (code.contains('222')) {
-                                  try {
-                                    final existUser =
-                                        await _auth.signInWithEmailAndPassword(
-                                            email: '2@gmail.com',
-                                            password: '123456');
-                                    if (existUser != null) {
-                                      Navigator.pushNamed(context, '/');
-                                    }
-                                  } catch (e) {
-                                    print(e);
-                                  }
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PollScreen(
-                                                indexOfPoll: iid,
-                                              )));
-                                  if (snapshot.hasData) {
-                                    var users = snapshot.data!.docs
-                                        .firstWhere(
-                                            (element) => element.id == '1')
-                                        .get('amount');
-                                    var data = {'amount': users + 1};
-                                    FirebaseFirestore.instance
-                                        .collection('users')
-                                        .doc('1')
-                                        .update(data);
-                                    print(users);
-                                  }
-                                }
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('waitOrClickOrStart')
+                                    .doc('1')
+                                    .update({'waitOrClickOrStart': 2});
+                                LoginVer(
+                                    snapshot, inputCode, _auth, iid, context);
                               },
                               child: Text('Нажміть'))
                         ]),
@@ -174,4 +140,41 @@ class LoginScreen extends StatelessWidget {
           return Container();
         });
   }
+
+  // Login(
+  //   inputCode: code,
+  //   auth: _auth,
+  //   iid: iid,
+  //   currectCode: '17159881',
+  //   snapshot: snapshot,
+  //   userEmail: 'admin@gmail.com',
+  // ),
+  // Login(
+  //     inputCode: code,
+  //     auth: _auth,
+  //     iid: iid,
+  //     snapshot: snapshot,
+  //     currectCode: '17151327',
+  //     userEmail: '1@gmail.com'),
+  // Login(
+  //     inputCode: code,
+  //     auth: _auth,
+  //     iid: iid,
+  //     snapshot: snapshot,
+  //     currectCode: '17151488',
+  //     userEmail: '2@gmail.com'),
+  // Login(
+  //     inputCode: code,
+  //     auth: _auth,
+  //     iid: iid,
+  //     snapshot: snapshot,
+  //     currectCode: '17152060',
+  //     userEmail: '3@gmail.com'),
+  // Login(
+  //     inputCode: code,
+  //     auth: _auth,
+  //     iid: iid,
+  //     snapshot: snapshot,
+  //     currectCode: '17154513',
+  //     userEmail: '4@gmail.com'
 }

@@ -69,7 +69,7 @@ class _DialogForAddState extends State<DialogForAdd> {
                       });
                     },
                     child: Text(
-                      "Виберіть час",
+                      "Виберіть дату",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -80,7 +80,7 @@ class _DialogForAddState extends State<DialogForAdd> {
                       });
                     },
                     child: Text(
-                      "Виберіть дату",
+                      "Виберіть час",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),

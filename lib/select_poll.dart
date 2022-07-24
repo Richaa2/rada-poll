@@ -26,73 +26,72 @@ class SelectPoll extends StatelessWidget {
             builder: (context, pollData, child) {
               if (snapshot.hasData) {
                 // ..sort(((a, b) => b.id.compareTo(a.id)));
-
-                // if (polls.isEmpty) {
-                //   if (polls.length < pollsFire.length) {
-                //     for (var poll in pollsFire) {
-                //       final accountRow = Poll(
-                //         decision: poll['decision'],
-                //         startTime: poll['startTime'],
-                //         endDate: poll["endDate"],
-                //         endTime: poll["endTime"],
-                //         id: poll["id"],
-                //         question: poll['question'],
-                //         startMinute: poll["startMinute"],
-                //         startTimestamp: poll["w"],
-                //         votedOrNo: poll["votedOrNo"],
-                //       );
-                //       polls.add(accountRow);
-                //     }
-                //   }
-                // }
-                Timestamp a;
-                print('selected Screen');
                 var pollsFire = snapshot.data!.docs;
                 var polls = pollData.polls;
+                if (polls.isEmpty) {
+                  if (polls.length < pollsFire.length) {
+                    for (var poll in pollsFire) {
+                      final accountRow = Poll(
+                        decision: poll['decision'],
+                        startTime: poll['startTime'],
+                        id: poll["id"],
+                        question: poll['question'],
+                        startMinute: poll["startMinute"],
+                        startTimestamp: poll["w"],
+                        votedOrNo: poll["votedOrNo"],
+                      );
+                      polls.add(accountRow);
+                    }
+                  }
+                }
+
+                print('selected Screen');
+
                 String selectedPoll = '';
                 var numberPoll = 0;
 
                 if (pollsFire.any((element) =>
-                    element.get('votedOrNo') == false &&
-                    element.get('startTime') == TimeOfDay.now().hour &&
-                    element.get('startMinute') == TimeOfDay.now().minute)) {
-                  print('Selected Widget');
-
-                  pollData.haveOrNo = true;
-
+                        element.get('votedOrNo') == false &&
+                        element.get('startTime') == TimeOfDay.now().hour &&
+                        element.get('startMinute') >= TimeOfDay.now().minute - 5
+                    // &&
+                    // element.get('startMinute') >= TimeOfDay.now().minute - 5
+                    )) {
                   // selectedPoll = polls.indexWhere((element) =>
                   //     element.startTimestamp.toDate().day ==
                   //         DateTime.now().day &&
                   //     element.startTime == TimeOfDay.now().hour &&
                   //     element.startMinute == TimeOfDay.now().minute &&
                   //     element.votedOrNo == false);
-
+                  pollData.haveOrNo = true;
+                  print('Selected Widget');
                   selectedPoll = pollsFire
-                      .firstWhere((element) =>
+                      .lastWhere((element) =>
                           // element.get('w') ==
                           //     Timestamp.fromDate(DateTime.now()) &&
                           element.get('votedOrNo') == false &&
                           element.get('startTime') == TimeOfDay.now().hour &&
-                          element.get('startMinute') == TimeOfDay.now().minute)
+                          element.get('startMinute') >=
+                              TimeOfDay.now().minute - 5)
                       .id;
                   numberPoll = snapshot.data!.docs
                       .singleWhere((element) => element.id == selectedPoll)
                       .get('id');
-                  ;
                   print('index ' + selectedPoll);
+
                   print(pollData.polls.first.id);
                 } else {
                   pollData.haveOrNo = false;
                   print('Faalse have or not');
                 }
 
-                if (polls.any((element) =>
-                    element.startTimestamp.toDate().day != DateTime.now().day &&
-                    element.startTime != TimeOfDay.now().hour &&
-                    element.votedOrNo != false)) {
-                  print('False');
-                  pollData.haveOrNo = false;
-                }
+                // if (polls.any((element) =>
+                //     element.startTimestamp.toDate().day != DateTime.now().day &&
+                //     element.startTime != TimeOfDay.now().hour &&
+                //     element.votedOrNo != false)) {
+                //   print('False');
+                //   pollData.haveOrNo = false;
+                // }
                 return Container(
                   child: Scaffold(
                       appBar: AppBar(

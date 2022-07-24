@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -22,6 +23,13 @@ class TestScreen extends StatelessWidget {
             var question = snapshot.data!.docs
                 .firstWhere((element) => element.id == index)
                 .get('question');
+            // final player = AudioCache();
+            // if (startMusic == true) {
+            //   player.play('2.mp3');
+            // }
+            // if (player.play('2.mp3') != true && startMusic != true) {
+            //   player.play('2.mp3');
+            // }
 
             return ModalProgressHUD(
               inAsyncCall: startedPollForModal,

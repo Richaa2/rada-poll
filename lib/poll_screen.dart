@@ -32,6 +32,7 @@ class PollScreen extends StatefulWidget {
 }
 
 class _PollScreenState extends State<PollScreen> {
+  // int minUser = 5;
   late int seconds;
   // late int seconds2 = Provider.of<PollData>(context).seconds2;
   Timer? timer1;
@@ -48,26 +49,6 @@ class _PollScreenState extends State<PollScreen> {
   void pauseTimer2() {
     timer2?.cancel();
   }
-
-  // void startTimer2() {
-  //   timer2 = Timer.periodic(Duration(seconds: 1), (timer2) {
-  //     if (seconds2 > 0 &&
-  //         Provider.of<PollData>(context, listen: false).waitOrClickOrStart ==
-  //             1) {
-  //       setState(() {
-  //         FirebaseFirestore.instance
-  //             .collection('waitOrClickOrStart')
-  //             .doc('1')
-  //             .update({'waitOrClickOrStart': 1});
-  //         seconds2--;
-  //         people = people + 3;
-  //         print('indexx' + widget.indexOfPoll.toString());
-  //       });
-  //     } else {
-  //       pauseTimer2();
-  //     }
-  //   });
-  // }
 
   @override
   void dispose() {
@@ -181,45 +162,7 @@ class _PollScreenState extends State<PollScreen> {
                           if (waitOrClickOrStartFirebase == 2) {
                             pollData.waitOrClickOrStart = 2;
                           }
-                          // if (waitOrClickOrStartFirebase == 3) {
-                          //   pollData.waitOrClickOrStart = 3;
-                          // }
-                          // if (waitOrClickOrStartFirebase == 4) {
-                          //   pollData.waitOrClickOrStart = 4;
-                          // }
 
-                          // final poll = pollData.polls[widget.indexOfPoll];
-
-                          // final int days = DateTime(
-                          //   poll.endDate.year,
-                          //   poll.endDate.month,
-                          //   poll.endDate.day,
-                          // )
-                          // .difference(DateTime(
-                          //   DateTime.now().year,
-                          //   DateTime.now().month,
-                          //   DateTime.now().day,
-                          // ))
-                          //     .inDays;
-
-                          // TODO users logined
-                          // if (peopleFire == 0 &&
-                          //     waitOrClickOrStartFirebase == 2) {
-                          //   Navigator.of(context).popAndPushNamed('/');
-                          //   // FirebaseFirestore.instance
-                          //   //     .collection('waitOrClickOrStart')
-                          //   //     .doc('1')
-                          //   //     .update({'waitOrClickOrStart': 2});
-                          // }
-                          // bool? startMusic = false;
-                          // if (waitOrClickOrStartFirebase == 3 &&
-                          //     startMusic == false) {
-                          //   startMusic = true;
-                          //   final player = AudioCache();
-                          //   player.play('2.mp3');
-
-                          //   print('WDYM');
-                          // }
                           pollData.haveOrNo = false;
                           return Scaffold(
                             body: Container(
@@ -248,7 +191,8 @@ class _PollScreenState extends State<PollScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Text('зайшло $peopleFire',
+                                                    Text(
+                                                        'зайшло $peopleFire депутатів',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 30,
@@ -274,7 +218,7 @@ class _PollScreenState extends State<PollScreen> {
                                                             .styleFrom(
                                                                 primary:
                                                                     peopleFire >=
-                                                                            2
+                                                                            5
                                                                         ? Colors
                                                                             .green
                                                                         : Colors
@@ -292,7 +236,7 @@ class _PollScreenState extends State<PollScreen> {
                                                           );
 
                                                           //Change people
-                                                          if (peopleFire >= 1) {
+                                                          if (peopleFire >= 5) {
                                                             setState(() {
                                                               FirebaseFirestore
                                                                   .instance

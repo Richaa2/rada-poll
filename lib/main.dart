@@ -7,13 +7,17 @@ import 'package:rada_poll/models/poll_data.dart';
 import 'package:rada_poll/poll_screen.dart';
 import 'package:rada_poll/select_poll.dart';
 import 'package:rada_poll/test_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'login_screen.dart';
 import 'main_page.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -27,6 +31,7 @@ class MyApp extends StatelessWidget {
         create: (BuildContext context) => PollData(),
         builder: (context, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
               '/': (context) => MainPage(),

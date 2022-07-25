@@ -23,13 +23,6 @@ class TestScreen extends StatelessWidget {
             var question = snapshot.data!.docs
                 .firstWhere((element) => element.id == index)
                 .get('question');
-            // final player = AudioCache();
-            // if (startMusic == true) {
-            //   player.play('2.mp3');
-            // }
-            // if (player.play('2.mp3') != true && startMusic != true) {
-            //   player.play('2.mp3');
-            // }
 
             return ModalProgressHUD(
               inAsyncCall: startedPollForModal,

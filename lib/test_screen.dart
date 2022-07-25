@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -12,7 +12,7 @@ class TestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(index.toString() + 'index on final');
+
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("poll")
@@ -40,11 +40,11 @@ class TestScreen extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                   color: Colors.grey.shade700,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(50),
-                                      topRight: Radius.circular(50))),
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: const Radius.circular(50),
+                                      topRight: const Radius.circular(50))),
                               height: 100,
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   'Рада IV',
                                   style: TextStyle(
@@ -70,14 +70,14 @@ class TestScreen extends StatelessWidget {
                               height: 300,
                               child: Row(
                                 children: [
-                                  Spacer(
+                                  const Spacer(
                                     flex: 1,
                                   ),
                                   Column(
                                     children: [
-                                      Text(
+                                      const Text(
                                         'ЗА',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold),
@@ -99,11 +99,8 @@ class TestScreen extends StatelessWidget {
                                                 .collection('poll')
                                                 .doc(index)
                                                 .update(data);
-                                            print('click' +
-                                                Provider.of<PollData>(context,
-                                                        listen: false)
-                                                    .clickYes
-                                                    .toString());
+                                     
+                                           
                                             startedPollForModal = true;
                                           },
                                           child: Container(
@@ -114,7 +111,7 @@ class TestScreen extends StatelessWidget {
                                                         .withOpacity(0.5),
                                                     spreadRadius: 3,
                                                     blurRadius: 3,
-                                                    offset: Offset(0,
+                                                    offset: const Offset(0,
                                                         3), // changes position of shadow
                                                   ),
                                                 ],
@@ -126,19 +123,19 @@ class TestScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                     ],
                                   ),
-                                  Spacer(
+                                  const Spacer(
                                     flex: 1,
                                   ),
                                   Column(
                                     children: [
-                                      Text(
+                                      const Text(
                                         'УТРИМАВСЯ',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold),
@@ -161,11 +158,7 @@ class TestScreen extends StatelessWidget {
                                                 .collection('poll')
                                                 .doc(index)
                                                 .update(data);
-                                            print('click' +
-                                                Provider.of<PollData>(context,
-                                                        listen: false)
-                                                    .clickHold
-                                                    .toString());
+                                        
                                             startedPollForModal = true;
                                           },
                                           child: Container(
@@ -176,7 +169,7 @@ class TestScreen extends StatelessWidget {
                                                         .withOpacity(0.5),
                                                     spreadRadius: 3,
                                                     blurRadius: 3,
-                                                    offset: Offset(0,
+                                                    offset: const Offset(0,
                                                         3), // changes position of shadow
                                                   ),
                                                 ],
@@ -188,19 +181,19 @@ class TestScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                     ],
                                   ),
-                                  Spacer(
+                                  const Spacer(
                                     flex: 1,
                                   ),
                                   Column(
                                     children: [
-                                      Text(
+                                      const Text(
                                         'ПРОТИ',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold),
@@ -217,11 +210,7 @@ class TestScreen extends StatelessWidget {
                                                 .collection('poll')
                                                 .doc(index)
                                                 .update(data);
-                                            print('click' +
-                                                Provider.of<PollData>(context,
-                                                        listen: false)
-                                                    .clickNo
-                                                    .toString());
+                                        
                                             startedPollForModal = true;
                                           },
                                           child: Container(
@@ -232,7 +221,7 @@ class TestScreen extends StatelessWidget {
                                                       .withOpacity(0.5),
                                                   spreadRadius: 3,
                                                   blurRadius: 3,
-                                                  offset: Offset(0,
+                                                  offset: const Offset(0,
                                                       3), // changes position of shadow
                                                 ),
                                               ],
@@ -245,12 +234,12 @@ class TestScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                     ],
                                   ),
-                                  Spacer(
+                                  const Spacer(
                                     flex: 1,
                                   ),
                                 ],
@@ -270,7 +259,7 @@ class TestScreen extends StatelessWidget {
                             child: Container(
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade700,
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(100),
                                         bottomRight: Radius.circular(100))),
                                 height: 150,
@@ -279,22 +268,22 @@ class TestScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Spacer(
+                                    const Spacer(
                                       flex: 1,
                                     ),
                                     Column(
                                       children: [
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
-                                        Text(
+                                        const Text(
                                           'ЗАПИС НА ВИСТУП',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
                                         ),
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
                                         Flexible(
@@ -308,7 +297,7 @@ class TestScreen extends StatelessWidget {
                                                       .withOpacity(0.3),
                                                   spreadRadius: 1,
                                                   blurRadius: 1,
-                                                  offset: Offset(0,
+                                                  offset: const Offset(0,
                                                       3), // changes position of shadow
                                                 ),
                                               ],
@@ -318,27 +307,27 @@ class TestScreen extends StatelessWidget {
                                             width: 70,
                                           ),
                                         ),
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
                                       ],
                                     ),
-                                    Spacer(
+                                    const Spacer(
                                       flex: 1,
                                     ),
                                     Column(
                                       children: [
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
-                                        Text(
+                                        const Text(
                                           'ВІДМОВА ВІД ВИСТУПУ',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
                                         ),
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
                                         Flexible(
@@ -352,7 +341,7 @@ class TestScreen extends StatelessWidget {
                                                       .withOpacity(0.3),
                                                   spreadRadius: 1,
                                                   blurRadius: 1,
-                                                  offset: Offset(0,
+                                                  offset: const Offset(0,
                                                       3), // changes position of shadow
                                                 ),
                                               ],
@@ -362,12 +351,12 @@ class TestScreen extends StatelessWidget {
                                             width: 70,
                                           ),
                                         ),
-                                        Spacer(
+                                        const Spacer(
                                           flex: 1,
                                         ),
                                       ],
                                     ),
-                                    Spacer(
+                                    const Spacer(
                                       flex: 1,
                                     )
                                   ],

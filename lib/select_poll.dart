@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:provider/provider.dart';
 import 'package:rada_poll/login_screen.dart';
 import 'package:rada_poll/models/poll_data.dart';
-import 'package:rada_poll/poll_screen.dart';
+
 
 import 'models/poll.dart';
 
 class SelectPoll extends StatelessWidget {
-  SelectPoll({Key? key}) : super(key: key);
+  const SelectPoll({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,6 @@ class SelectPoll extends StatelessWidget {
                   }
                 }
 
-                print('selected Screen');
 
                 String selectedPoll = '';
                 var numberPoll = 0;
@@ -64,7 +62,7 @@ class SelectPoll extends StatelessWidget {
                   //     element.startMinute == TimeOfDay.now().minute &&
                   //     element.votedOrNo == false);
                   pollData.haveOrNo = true;
-                  print('Selected Widget');
+           
                   selectedPoll = pollsFire
                       .lastWhere((element) =>
                           // element.get('w') ==
@@ -77,12 +75,12 @@ class SelectPoll extends StatelessWidget {
                   numberPoll = snapshot.data!.docs
                       .singleWhere((element) => element.id == selectedPoll)
                       .get('id');
-                  print('index ' + selectedPoll);
+            
 
-                  print(pollData.polls.first.id);
+               
                 } else {
                   pollData.haveOrNo = false;
-                  print('Faalse have or not');
+             
                 }
 
                 // if (polls.any((element) =>
@@ -92,82 +90,80 @@ class SelectPoll extends StatelessWidget {
                 //   print('False');
                 //   pollData.haveOrNo = false;
                 // }
-                return Container(
-                  child: Scaffold(
-                      appBar: AppBar(
-                        title: Text(
-                          'Теперішні голосування',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        centerTitle: true,
+                return Scaffold(
+                    appBar: AppBar(
+                      title: const Text(
+                        'Теперішні голосування',
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      body: pollData.haveOrNo == false
-                          ? Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.blue,
-                                    Color.fromARGB(255, 212, 140, 32)
-                                  ],
-                                ),
+                      centerTitle: true,
+                    ),
+                    body: pollData.haveOrNo == false
+                        ? Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Color.fromARGB(255, 212, 140, 32)
+                                ],
                               ),
-                              child: Center(
-                                child: Text(
-                                  'На даний момент немає голосування',
-                                  style: TextStyle(
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'На даний момент немає голосування',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Color.fromARGB(255, 212, 140, 32)
+                                ],
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                Text(
+                                  'Голосування номер $numberPoll',
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600),
                                 ),
-                              ),
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.blue,
-                                    Color.fromARGB(255, 212, 140, 32)
-                                  ],
+                                const Spacer(
+                                  flex: 1,
                                 ),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Spacer(
-                                    flex: 1,
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                               
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginScreen(
+                                                    iid: selectedPoll,
+                                                  )));
+                                    },
+                                    child: const Text('ВЕРЕТИФІКАЦІЯ'),
                                   ),
-                                  Text(
-                                    'Голосування номер $numberPoll',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Spacer(
-                                    flex: 1,
-                                  ),
-                                  Center(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        print(selectedPoll);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginScreen(
-                                                      iid: selectedPoll,
-                                                    )));
-                                      },
-                                      child: Text('ВЕРЕТИФІКАЦІЯ'),
-                                    ),
-                                  ),
-                                  Spacer(
-                                    flex: 2,
-                                  ),
-                                ],
-                              ),
-                            )),
-                );
+                                ),
+                                const Spacer(
+                                  flex: 2,
+                                ),
+                              ],
+                            ),
+                          ));
               }
               return Container();
             },

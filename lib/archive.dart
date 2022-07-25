@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:rada_poll/models/poll_data.dart';
@@ -56,7 +55,7 @@ class ArchiveScreen extends StatelessWidget {
 
                 return Scaffold(
                   appBar: AppBar(
-                    title: Text(
+                    title: const Text(
                       'Минулі голосування',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
@@ -71,14 +70,14 @@ class ArchiveScreen extends StatelessWidget {
                                           startTime: TimeOfDay.now().minute,
                                           startMinute: TimeOfDay.now().hour,
                                           startTimestamp: Timestamp.now()));
-                                  print('create');
+                                 
                                 }
                               : () {},
-                          icon: Icon(Icons.add_circle_outlined))
+                          icon: const Icon(Icons.add_circle_outlined))
                     ],
                   ),
                   body: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
                           Colors.blue,
@@ -90,8 +89,7 @@ class ArchiveScreen extends StatelessWidget {
                       itemCount: poll.length,
                       itemBuilder: (context, index) {
                         if (poll.elementAt(index).startMinute < 10) {
-                          minute = '0' +
-                              poll.elementAt(index).startMinute.toString();
+                          minute = '0${poll.elementAt(index).startMinute}';
                         } else {
                           minute = poll.elementAt(index).startMinute.toString();
                         }
@@ -108,13 +106,9 @@ class ArchiveScreen extends StatelessWidget {
                                 subtitle: Row(
                                   children: [
                                     Text(
-                                      'час початку  ' +
-                                          poll
+                                      'час початку  ${poll
                                               .elementAt(index)
-                                              .startTime
-                                              .toString() +
-                                          ':' +
-                                          minute,
+                                              .startTime}:$minute',
 
                                       style: TextStyle(
                                           color: Colors.indigo[500],
@@ -122,28 +116,23 @@ class ArchiveScreen extends StatelessWidget {
                                           fontWeight: FontWeight.w600),
                                       // poll.elementAt(index).startDate.day.toString()
                                     ),
-                                    Spacer(
+                                    const Spacer(
                                       flex: 1,
                                     ),
                                     Text(
-                                      ' число  ' +
-                                          poll
+                                      ' число  ${poll
                                               .elementAt(index)
                                               .startTimestamp
                                               .toDate()
-                                              .month
-                                              .toString() +
-                                          '.' +
-                                          poll
+                                              .month}.${poll
                                               .elementAt(index)
                                               .startTimestamp
                                               .toDate()
-                                              .day
-                                              .toString(),
+                                              .day}',
                                       style: TextStyle(
                                         color: poll.elementAt(index).decision
-                                            ? Color.fromARGB(255, 15, 124, 18)
-                                            : Color.fromARGB(255, 160, 23, 13),
+                                            ? const Color.fromARGB(255, 15, 124, 18)
+                                            : const Color.fromARGB(255, 160, 23, 13),
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -157,8 +146,8 @@ class ArchiveScreen extends StatelessWidget {
                   ),
                 );
               } else {
-                return Center(
-                  child: ModalProgressHUD(
+                return const Center(
+                  child: const ModalProgressHUD(
                     inAsyncCall: true,
                     child: SizedBox(),
                   ),

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -8,12 +8,12 @@ import 'package:rada_poll/models/poll.dart';
 import 'package:rada_poll/models/poll_data.dart';
 
 class AddPollScreen extends StatelessWidget {
+  const AddPollScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    String questioninput = '';
     String minute = '';
 
-    TextEditingController _controller = TextEditingController();
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('poll')
@@ -25,7 +25,7 @@ class AddPollScreen extends StatelessWidget {
               var polls = pollData.polls;
               var pollsFire = snapshot.data!.docs;
 
-              final pollLast = snapshot.data!.docs.last;
+              // final pollLast = snapshot.data!.docs.last;
 
               if (polls.isEmpty) {
                 if (polls.length < pollsFire.length) {
@@ -49,33 +49,13 @@ class AddPollScreen extends StatelessWidget {
                   }
                 }
               }
-              // if (pollsFire.length > polls.length) {
-              //   polls.insert(
-              //       polls.length - 1,
-              //       Poll(
-              //         decision: pollLast['decision'],
-              //         startTime: pollLast['startTime'],
-              //         endDate: pollLast["endDate"],
-              //         endTime: pollLast["endTime"],
-              //         id: pollLast["id"],
-              //         question: pollLast['question'],
-              //         startMinute: pollLast["startMinute"],
-              //         startTimestamp: pollLast["w"],
-              //         votedOrNo: pollLast["votedOrNo"],
-              //         yes: pollLast["yes"],
-              //         no: pollLast['no'],
-              //         didNotVote: pollLast['didNotVote'],
-              //         hold: pollLast['hold'],
-              //       ));
-              // }
+        
 
               var pollVotedNo = polls.reversed.where((element) =>
                   element.votedOrNo == false &&
                   element.startTimestamp.toDate().day >= DateTime.now().day);
 
-              print(polls.length);
-              print(Timestamp.now().toDate());
-              print(Timestamp.now().seconds);
+           
 
               if (polls.length != pollsFire) {
                 polls.clear();
@@ -101,31 +81,31 @@ class AddPollScreen extends StatelessWidget {
                 appBar: AppBar(
                   actions: [
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add,
                       ),
                       onPressed: () {
                         showDialog(
                             context: context,
-                            builder: (context) => DialogForAdd());
+                            builder: (context) => const DialogForAdd());
                       },
                     )
                   ],
-                  title: Text(
+                  title: const Text(
                     'Майбутні голосування',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style:  TextStyle(fontWeight: FontWeight.w600),
                   ),
                   centerTitle: true,
                 ),
                 body: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Colors.blue, Color.fromARGB(255, 212, 140, 32)],
                     ),
                   ),
                   child: Column(
                     children: [
-                      //TODO listTile
+                
                       Expanded(
                         child: ListView.builder(
                           itemCount: pollVotedNo.length,
@@ -133,11 +113,9 @@ class AddPollScreen extends StatelessWidget {
                             if (snapshot.hasData) {
                               if (pollVotedNo.elementAt(index).startMinute <
                                   10) {
-                                minute = '0' +
-                                    pollVotedNo
+                                minute = '0${pollVotedNo
                                         .elementAt(index)
-                                        .startMinute
-                                        .toString();
+                                        .startMinute}';
                               } else {
                                 minute = pollVotedNo
                                     .elementAt(index)
@@ -161,13 +139,9 @@ class AddPollScreen extends StatelessWidget {
                                       subtitle: Row(
                                         children: [
                                           Text(
-                                            'час початку  ' +
-                                                pollVotedNo
+                                            'час початку  ${pollVotedNo
                                                     .elementAt(index)
-                                                    .startTime
-                                                    .toString() +
-                                                ':' +
-                                                minute,
+                                                    .startTime}:$minute',
 
                                             style: TextStyle(
                                                 color: Colors.indigo[500],
@@ -175,25 +149,20 @@ class AddPollScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.w600),
                                             // poll.elementAt(index).startDate.day.toString()
                                           ),
-                                          Spacer(
+                                          const Spacer(
                                             flex: 1,
                                           ),
                                           Text(
-                                            ' число  ' +
-                                                pollVotedNo
+                                            ' число  ${pollVotedNo
                                                     .elementAt(index)
                                                     .startTimestamp
                                                     .toDate()
-                                                    .month
-                                                    .toString() +
-                                                '.' +
-                                                pollVotedNo
+                                                    .month}.${pollVotedNo
                                                     .elementAt(index)
                                                     .startTimestamp
                                                     .toDate()
-                                                    .day
-                                                    .toString(),
-                                            style: TextStyle(
+                                                    .day}',
+                                            style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
                                           )
@@ -211,7 +180,7 @@ class AddPollScreen extends StatelessWidget {
                 ),
               );
             }
-            return SizedBox();
+            return const SizedBox();
           });
         });
   }

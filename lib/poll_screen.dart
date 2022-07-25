@@ -4,11 +4,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polls/flutter_polls.dart';
-import 'package:provider/provider.dart';
-import 'package:rada_poll/main_page.dart';
 
-import 'package:rada_poll/models/poll.dart';
+import 'package:provider/provider.dart';
+
 import 'package:rada_poll/models/poll_data.dart';
 import 'package:rada_poll/test_screen.dart';
 
@@ -20,9 +18,9 @@ const kTextStyle = TextStyle(
 bool startedPollForModal = false;
 
 class PollScreen extends StatefulWidget {
-  var indexOfPoll;
+  final  indexOfPoll;
 
-  PollScreen({
+  const PollScreen({
     Key? key,
     required this.indexOfPoll,
   }) : super(key: key);
@@ -40,7 +38,7 @@ class _PollScreenState extends State<PollScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     seconds = 10;
     // seconds2 = 5;
@@ -52,7 +50,7 @@ class _PollScreenState extends State<PollScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+  
     super.dispose();
   }
 
@@ -86,10 +84,10 @@ class _PollScreenState extends State<PollScreen> {
                               .firstWhere((element) => element.id == '1')
                               .get('amount');
 
-                          bool votedOrNo = snapshot2.data!.docs
-                              .firstWhere(
-                                  (element) => element.id == widget.indexOfPoll)
-                              .get('votedOrNo');
+                          // bool votedOrNo = snapshot2.data!.docs
+                          //     .firstWhere(
+                          //         (element) => element.id == widget.indexOfPoll)
+                          //     .get('votedOrNo');
 
                           int yesOld = snapshot2.data!.docs
                               .firstWhere(
@@ -139,7 +137,7 @@ class _PollScreenState extends State<PollScreen> {
                           // if (seconds2 >= 6) {}
                           void startTimer() {
                             timer1 =
-                                Timer.periodic(Duration(seconds: 1), (timer1) {
+                                Timer.periodic(const Duration(seconds: 1), (timer1) {
                               setState(() {
                                 seconds--;
                                 print(seconds);
@@ -149,9 +147,9 @@ class _PollScreenState extends State<PollScreen> {
 
                           if (seconds == 0) {
                             seconds = 10;
-                            print('seconds' + seconds.toString());
+                         
                             startedPollForModal = false;
-                            print(startedPollForModal);
+                           
                             FirebaseFirestore.instance
                                 .collection('waitOrClickOrStart')
                                 .doc('1')
@@ -167,7 +165,7 @@ class _PollScreenState extends State<PollScreen> {
                           return Scaffold(
                             body: Container(
                               decoration: waitOrClickOrStartFirebase < 4
-                                  ? BoxDecoration(
+                                  ? const BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
                                           Colors.blue,
@@ -175,7 +173,7 @@ class _PollScreenState extends State<PollScreen> {
                                         ],
                                       ),
                                     )
-                                  : BoxDecoration(color: Colors.black),
+                                  : const BoxDecoration(color: Colors.black),
                               child: Center(
                                 child: Container(
                                   height: MediaQuery.of(context).size.height,
@@ -193,24 +191,24 @@ class _PollScreenState extends State<PollScreen> {
                                                   children: [
                                                     Text(
                                                         'зайшло $peopleFire депутатів',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 30,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w700)),
-                                                    Spacer(
+                                                    const Spacer(
                                                       flex: 1,
                                                     ),
                                                     Text(
                                                       question,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
-                                                    Spacer(
+                                                    const Spacer(
                                                       flex: 1,
                                                     ),
                                                     ElevatedButton(
@@ -255,7 +253,7 @@ class _PollScreenState extends State<PollScreen> {
                                                               player.play(
                                                                   '2.mp3');
                                                               startTimer();
-                                                              print(wait);
+                                                           
                                                             });
                                                           } else {
                                                             ScaffoldMessenger
@@ -264,11 +262,11 @@ class _PollScreenState extends State<PollScreen> {
                                                                     snackBar);
                                                           }
                                                         },
-                                                        child: Text(
+                                                        child: const Text(
                                                           'ПОЧАТИ ГОЛОСУВАННЯ',
                                                           style: TextStyle(),
                                                         )),
-                                                    Spacer(
+                                                    const Spacer(
                                                       flex: 1,
                                                     ),
                                                   ],
@@ -283,7 +281,7 @@ class _PollScreenState extends State<PollScreen> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Text(
+                                                      const Text(
                                                         'ПІДСУМКИ ГОЛОСУВАННЯ',
                                                         style: kTextStyle,
                                                         textAlign:
@@ -300,7 +298,7 @@ class _PollScreenState extends State<PollScreen> {
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
                                                                       .end,
-                                                              children: [
+                                                              children: const [
                                                                 Text('ЗА',
                                                                     style:
                                                                         kTextStyle),
@@ -326,7 +324,7 @@ class _PollScreenState extends State<PollScreen> {
                                                               ],
                                                             ),
                                                           ),
-                                                          Spacer(
+                                                          const Spacer(
                                                             flex: 1,
                                                           ),
                                                           Flexible(
@@ -340,7 +338,7 @@ class _PollScreenState extends State<PollScreen> {
                                                                     (yesOld
                                                                         .toString()),
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .green,
                                                                       fontSize:
@@ -350,7 +348,7 @@ class _PollScreenState extends State<PollScreen> {
                                                                     noOld
                                                                         .toString(),
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .red,
                                                                       fontSize:
@@ -360,7 +358,7 @@ class _PollScreenState extends State<PollScreen> {
                                                                     holdOld
                                                                         .toString(),
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .yellow,
                                                                       fontSize:
@@ -370,7 +368,7 @@ class _PollScreenState extends State<PollScreen> {
                                                                     didNotVote
                                                                         .toString(),
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .teal,
                                                                       fontSize:
@@ -380,7 +378,7 @@ class _PollScreenState extends State<PollScreen> {
                                                                     allUsersPoll
                                                                         .toString(),
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .grey,
                                                                       fontSize:
@@ -389,12 +387,12 @@ class _PollScreenState extends State<PollScreen> {
                                                               ],
                                                             ),
                                                           ),
-                                                          Spacer(
+                                                          const Spacer(
                                                             flex: 2,
                                                           )
                                                         ],
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 15,
                                                       ),
                                                       Text(
@@ -411,7 +409,7 @@ class _PollScreenState extends State<PollScreen> {
                                                                 : Colors.red,
                                                             fontSize: 22,
                                                           )),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 100,
                                                       ),
                                                       ElevatedButton(
@@ -481,29 +479,7 @@ class _PollScreenState extends State<PollScreen> {
                                                               .votedOrNo = true;
                                                           startedPollForModal =
                                                               false;
-                                                          // MaterialPageRoute(
-                                                          //     builder:
-                                                          //         (context) =>
-                                                          //             MainPage()),
-                                                          // (Route<dynamic>
-                                                          //         route) =>
-                                                          //     false
-                                                          // Navigator.popUntil(
-                                                          //     context,
-                                                          //     ModalRoute
-                                                          //         .withName(
-                                                          //             '/'));
-                                                          // if (peopleFire == 0) {
-                                                          //   FirebaseFirestore
-                                                          //       .instance
-                                                          //       .collection(
-                                                          //           'waitOrClickOrStart')
-                                                          //       .doc('1')
-                                                          //       .update({
-                                                          //     'waitOrClickOrStart':
-                                                          //         2
-                                                          //   });
-                                                          // }
+                                                     
                                                           Navigator.of(context)
                                                               .popAndPushNamed(
                                                                   '/');
@@ -518,7 +494,7 @@ class _PollScreenState extends State<PollScreen> {
 
                                                           // poll.votedOrNo = true;
                                                         },
-                                                        child: Text(
+                                                        child: const Text(
                                                           'завершити',
                                                           style: TextStyle(
                                                               color: Colors
@@ -542,9 +518,9 @@ class _PollScreenState extends State<PollScreen> {
 }
 
 class WaitZone extends StatelessWidget {
-  WaitZone({Key? key, required this.people}) : super(key: key);
+  const WaitZone({Key? key, required this.people}) : super(key: key);
 
-  var people;
+ final   people;
 
   @override
   Widget build(BuildContext context) {
@@ -555,7 +531,7 @@ class WaitZone extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Spacer(
+        const Spacer(
           flex: 3,
         ),
         // Text(
@@ -564,15 +540,15 @@ class WaitZone extends StatelessWidget {
         //         color: Colors.white,
         //         fontSize: 30,
         //         fontWeight: FontWeight.w700)),
-        Spacer(
+        const Spacer(
           flex: 2,
         ),
         Text('зайшло $people депутатів',
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.w700)),
-        Spacer(
+        const Spacer(
           flex: 3,
         ),
       ],
@@ -590,63 +566,4 @@ class ResultScreen extends StatelessWidget {
     );
   }
 }
-// class ContainerOfPoll extends StatelessWidget {
-//   const ContainerOfPoll({
-//     Key? key,
-//     required this.poll,
-//     // required this.days,
-//     required this.seconds,
-//   }) : super(key: key);
-//   final int seconds;
-//   final Poll poll;
-//   // final int days;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 300,
-//       height: 500,
-//       margin: const EdgeInsets.only(bottom: 20),
-//       child: Expanded(
-//         child: FlutterPolls(
-//           pollId: poll.id.toString(),
-//           hasVoted: false,
-//           // userVotedOptionId: userVotedOptionId.value,
-//           onVoted: (PollOption pollOption, int newTotalVotes) async {
-//             await Future.delayed(Duration(seconds: seconds - 2));
-
-//             waitOrClickOrStart = 4;
-
-//             /// If HTTP status is success, return true else false
-//             return true;
-//           },
-//           // pollEnded: days < 0,
-//           pollTitle: Container(
-//             alignment: Alignment.centerLeft,
-//             child: Column(
-//               children: [
-//                 Center(
-//                   child: Text(
-//                     'id: ' + poll.id.toString() + '    ' + poll.question,
-//                     style: const TextStyle(
-//                       fontSize: 14,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   height: 150,
-//                 ),
-//               ],
-//             ),
-//           ),
-//           pollOptions: List<PollOption>.from(poll.option),
-//           votedPercentageTextStyle: const TextStyle(
-//             fontSize: 10,
-//             fontWeight: FontWeight.w600,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

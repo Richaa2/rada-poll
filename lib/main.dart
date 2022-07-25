@@ -4,13 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:rada_poll/add_poll.dart';
 import 'package:rada_poll/archive.dart';
 import 'package:rada_poll/models/poll_data.dart';
-import 'package:rada_poll/poll_screen.dart';
+
 import 'package:rada_poll/select_poll.dart';
-import 'package:rada_poll/test_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 
-import 'login_screen.dart';
 import 'main_page.dart';
 
 Future<void> main() async {
@@ -18,7 +16,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -34,12 +32,12 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              '/': (context) => MainPage(),
+              '/': (context) => const MainPage(),
               // '/': (context) => PollScreen(indexOfPoll: '5EiELmmP7rQqICUZovLJ'),
-              '/Archive': ((context) => ArchiveScreen()),
-              '/Add': ((context) => AddPollScreen()),
+              '/Archive': ((context) => const ArchiveScreen()),
+              '/Add': ((context) => const AddPollScreen()),
               // '/Poll': ((context) => PollScreen(indexOfPoll: null,)),
-              '/SelectPoll': ((context) => SelectPoll())
+              '/SelectPoll': ((context) => const SelectPoll())
             },
             title: 'Rada',
             theme: ThemeData(scaffoldBackgroundColor: Colors.blue),

@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:provider/provider.dart';
 
 import 'models/poll.dart';
 import 'models/poll_data.dart';
 
 class DialogForAdd extends StatefulWidget {
-  DialogForAdd({Key? key}) : super(key: key);
+  const DialogForAdd({Key? key}) : super(key: key);
 
   @override
   State<DialogForAdd> createState() => _DialogForAddState();
@@ -26,7 +24,7 @@ class _DialogForAddState extends State<DialogForAdd> {
   TimeOfDay Time = TimeOfDay.now();
   DateTime dateTime = DateTime.now();
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class _DialogForAddState extends State<DialogForAdd> {
       ),
       child: SingleChildScrollView(
         child: AlertDialog(
-          title: Center(
+          title: const Center(
               child: Text(
             'Створіть Голосування',
             style: TextStyle(fontWeight: FontWeight.w600),
@@ -44,9 +42,9 @@ class _DialogForAddState extends State<DialogForAdd> {
           content: Consumer<PollData>(
             builder: (context, pollData, child) =>
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
+              const Text(
                 'Введіть назву',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               TextFormField(
                 // inputFormatters: [
@@ -68,9 +66,9 @@ class _DialogForAddState extends State<DialogForAdd> {
                         _selectDate(context);
                       });
                     },
-                    child: Text(
+                    child: const Text(
                       "Виберіть дату",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                   ElevatedButton(
@@ -79,7 +77,7 @@ class _DialogForAddState extends State<DialogForAdd> {
                         _selectTime(context);
                       });
                     },
-                    child: Text(
+                    child: const Text(
                       "Виберіть час",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
@@ -88,11 +86,11 @@ class _DialogForAddState extends State<DialogForAdd> {
               ),
               Text(
                 "mouth: ${dateTime.month}    day:${dateTime.day}",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               Text(
                 "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               ElevatedButton(
                   onPressed: () {
@@ -113,9 +111,9 @@ class _DialogForAddState extends State<DialogForAdd> {
 
                     // Navigator.popAndPushNamed(context, '/SelectPoll');
                   },
-                  child: Text(
+                  child: const Text(
                     'Добавити',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   )),
             ]),
           ),

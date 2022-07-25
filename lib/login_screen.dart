@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:provider/provider.dart';
 import 'package:rada_poll/models/poll_data.dart';
 
@@ -15,7 +14,7 @@ class LoginScreen extends StatelessWidget {
   final String iid;
   LoginScreen({Key? key, this.indexOfPoll, required this.iid})
       : super(key: key);
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   var currectCodes = {
     'admin@gmail.com': '17159881',
@@ -40,13 +39,11 @@ class LoginScreen extends StatelessWidget {
       var mapEmail = currectCodes.entries
           .firstWhere((element) => element.value == inputCode)
           .key;
-      print(mapEmail);
+   
       try {
         final existUser = await _auth.signInWithEmailAndPassword(
             email: mapEmail, password: '123456');
-        if (existUser != null) {
-          Navigator.pushNamed(context, '/');
-        }
+     
       } catch (e) {
         print(e);
       }
@@ -85,25 +82,25 @@ class LoginScreen extends StatelessWidget {
           if (snapshot.hasData) {
             return Scaffold(
               appBar: AppBar(
-                title: Text('Веритифікація'),
+                title: const Text('Веритифікація'),
                 centerTitle: true,
               ),
               body: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                decoration: const BoxDecoration(
+                  gradient: const LinearGradient(
                     colors: [Colors.blue, Color.fromARGB(255, 212, 140, 32)],
                   ),
                 ),
                 child: Center(
                   child: SingleChildScrollView(
                     physics:
-                        ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        const ScrollPhysics(parent: const AlwaysScrollableScrollPhysics()),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             'Веддіть код ',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 15,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600),
@@ -112,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                             width: 100,
                             height: 30,
                             child: TextFormField(
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               autofocus: true,
                               keyboardType: TextInputType.number,
                               controller: _controller,
@@ -130,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                                 LoginVer(
                                     snapshot, inputCode, _auth, iid, context);
                               },
-                              child: Text('Нажміть'))
+                              child: const Text('Нажміть'))
                         ]),
                   ),
                 ),

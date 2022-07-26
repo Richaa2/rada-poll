@@ -51,10 +51,14 @@ class SelectPoll extends StatelessWidget {
                 if (pollsFire.any((element) =>
                             element.get('votedOrNo') == false &&
                             element.get('startTime') == TimeOfDay.now().hour &&
-                            element.get('startMinute') >=
+                            element.get('startMinute') - 5 <=
                                 TimeOfDay.now().minute &&
-                            element.get('startMinute') - 5 <
-                                TimeOfDay.now().minute
+                            TimeOfDay.now().minute - 1 <=
+                                element.get('startMinute')
+                        // element.get('startMinute') >=
+                        //     TimeOfDay.now().minute &&
+                        // element.get('startMinute') - 5 <
+                        //     TimeOfDay.now().minute
 
                         // &&
                         // element.get('startMinute') >= TimeOfDay.now().minute - 5

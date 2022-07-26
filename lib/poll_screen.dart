@@ -144,19 +144,11 @@ class _PollScreenState extends State<PollScreen> {
                           }
 
                           if (seconds == 0) {
-                            seconds = 10;
-
-                            startedPollForModal = false;
-
                             FirebaseFirestore.instance
                                 .collection('waitOrClickOrStart')
                                 .doc('1')
                                 .update({'waitOrClickOrStart': 4});
                             pauseTimer1();
-                          }
-
-                          if (waitOrClickOrStartFirebase == 2) {
-                            pollData.waitOrClickOrStart = 2;
                           }
 
                           pollData.haveOrNo = false;
@@ -234,23 +226,36 @@ class _PollScreenState extends State<PollScreen> {
                                                           //Change people
                                                           if (peopleFire >= 1) {
                                                             setState(() {
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'waitOrClickOrStart')
-                                                                  .doc('1')
-                                                                  .update({
-                                                                'waitOrClickOrStart':
-                                                                    3
+                                                              Future.delayed(
+                                                                      Duration(
+                                                                          seconds:
+                                                                              3))
+                                                                  .then(
+                                                                      (value) {
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'waitOrClickOrStart')
+                                                                    .doc('1')
+                                                                    .update({
+                                                                  'waitOrClickOrStart':
+                                                                      3
+                                                                });
+                                                                Future.delayed(const Duration(
+                                                                        seconds:
+                                                                            2))
+                                                                    .then(
+                                                                        (value) {
+                                                                  startTimer();
+                                                                  final player =
+                                                                      AudioCache();
+                                                                  player.play(
+                                                                      '2.mp3');
+                                                                });
+                                                                // startMusic =
+                                                                //     false;
+                                                                wait = 3;
                                                               });
-                                                              // startMusic =
-                                                              //     false;
-                                                              wait = 3;
-                                                              final player =
-                                                                  AudioCache();
-                                                              player.play(
-                                                                  '2.mp3');
-                                                              startTimer();
                                                             });
                                                           } else {
                                                             ScaffoldMessenger

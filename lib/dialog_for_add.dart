@@ -94,9 +94,7 @@ class _DialogForAddState extends State<DialogForAdd> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(
-                      context,
-                    );
+                    Navigator.popUntil(context, ModalRoute.withName('/Add'));
                     pollData.addPoll(Poll(
                       id: pollData.polls.length,
                       question: questioninput,

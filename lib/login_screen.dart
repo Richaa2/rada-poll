@@ -39,11 +39,10 @@ class LoginScreen extends StatelessWidget {
       var mapEmail = currectCodes.entries
           .firstWhere((element) => element.value == inputCode)
           .key;
-   
+
       try {
         final existUser = await _auth.signInWithEmailAndPassword(
             email: mapEmail, password: '123456');
-     
       } catch (e) {
         print(e);
       }
@@ -62,7 +61,13 @@ class LoginScreen extends StatelessWidget {
       var users = snapshot.data!.docs
           .firstWhere((element) => element.id == '1')
           .get('amount');
-      var data = {'amount': users + 1};
+      var data;
+      if (users >= 5) {
+        data = {'amount': 5};
+      } else {
+        data = {'amount': users + 1};
+      }
+
       FirebaseFirestore.instance.collection('users').doc('1').update(data);
       print(users);
 
@@ -93,8 +98,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 child: Center(
                   child: SingleChildScrollView(
-                    physics:
-                        const ScrollPhysics(parent: const AlwaysScrollableScrollPhysics()),
+                    physics: const ScrollPhysics(
+                        parent: const AlwaysScrollableScrollPhysics()),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

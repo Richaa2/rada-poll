@@ -233,7 +233,7 @@ class _PollScreenState extends State<PollScreen> {
 
                                                             //Change people
                                                             if (peopleFire >=
-                                                                1) {
+                                                                5) {
                                                               setState(() {
                                                                 Future.delayed(Duration(
                                                                         seconds:

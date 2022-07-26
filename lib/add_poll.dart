@@ -22,7 +22,10 @@ class AddPollScreen extends StatelessWidget {
         builder: (context, snapshot) {
           return Consumer<PollData>(builder: (context, pollData, child) {
             if (snapshot.hasData) {
-              var polls = pollData.polls;
+              var polls = pollData.polls
+                ..sort(
+                  (a, b) => b.startTimestamp.compareTo(a.startTimestamp),
+                );
               var pollsFire = snapshot.data!.docs;
 
               // final pollLast = snapshot.data!.docs.last;
@@ -49,13 +52,12 @@ class AddPollScreen extends StatelessWidget {
                   }
                 }
               }
-        
 
-              var pollVotedNo = polls.reversed.where((element) =>
+              var pollVotedNo = polls.where((element) =>
                   element.votedOrNo == false &&
-                  element.startTimestamp.toDate().day >= DateTime.now().day);
-
-           
+                  // element.startTimestamp.toDate().day >= DateTime.now().day &&
+                  element.startTimestamp.seconds >=
+                      Timestamp.now().seconds - 100);
 
               if (polls.length != pollsFire) {
                 polls.clear();
@@ -93,7 +95,7 @@ class AddPollScreen extends StatelessWidget {
                   ],
                   title: const Text(
                     'Майбутні голосування',
-                    style:  TextStyle(fontWeight: FontWeight.w600),
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   centerTitle: true,
                 ),
@@ -105,7 +107,6 @@ class AddPollScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                
                       Expanded(
                         child: ListView.builder(
                           itemCount: pollVotedNo.length,
@@ -113,9 +114,8 @@ class AddPollScreen extends StatelessWidget {
                             if (snapshot.hasData) {
                               if (pollVotedNo.elementAt(index).startMinute <
                                   10) {
-                                minute = '0${pollVotedNo
-                                        .elementAt(index)
-                                        .startMinute}';
+                                minute =
+                                    '0${pollVotedNo.elementAt(index).startMinute}';
                               } else {
                                 minute = pollVotedNo
                                     .elementAt(index)
@@ -139,9 +139,7 @@ class AddPollScreen extends StatelessWidget {
                                       subtitle: Row(
                                         children: [
                                           Text(
-                                            'час початку  ${pollVotedNo
-                                                    .elementAt(index)
-                                                    .startTime}:$minute',
+                                            'час початку  ${pollVotedNo.elementAt(index).startTime}:$minute',
 
                                             style: TextStyle(
                                                 color: Colors.indigo[500],
@@ -153,15 +151,7 @@ class AddPollScreen extends StatelessWidget {
                                             flex: 1,
                                           ),
                                           Text(
-                                            ' число  ${pollVotedNo
-                                                    .elementAt(index)
-                                                    .startTimestamp
-                                                    .toDate()
-                                                    .month}.${pollVotedNo
-                                                    .elementAt(index)
-                                                    .startTimestamp
-                                                    .toDate()
-                                                    .day}',
+                                            ' число  ${pollVotedNo.elementAt(index).startTimestamp.toDate().month}.${pollVotedNo.elementAt(index).startTimestamp.toDate().day}',
                                             style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),

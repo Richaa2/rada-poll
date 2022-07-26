@@ -18,7 +18,7 @@ const kTextStyle = TextStyle(
 bool startedPollForModal = false;
 
 class PollScreen extends StatefulWidget {
-  final  indexOfPoll;
+  final indexOfPoll;
 
   const PollScreen({
     Key? key,
@@ -38,7 +38,6 @@ class _PollScreenState extends State<PollScreen> {
 
   @override
   void initState() {
-
     super.initState();
     seconds = 10;
     // seconds2 = 5;
@@ -50,7 +49,6 @@ class _PollScreenState extends State<PollScreen> {
 
   @override
   void dispose() {
-  
     super.dispose();
   }
 
@@ -136,8 +134,8 @@ class _PollScreenState extends State<PollScreen> {
 
                           // if (seconds2 >= 6) {}
                           void startTimer() {
-                            timer1 =
-                                Timer.periodic(const Duration(seconds: 1), (timer1) {
+                            timer1 = Timer.periodic(const Duration(seconds: 1),
+                                (timer1) {
                               setState(() {
                                 seconds--;
                                 print(seconds);
@@ -147,9 +145,9 @@ class _PollScreenState extends State<PollScreen> {
 
                           if (seconds == 0) {
                             seconds = 10;
-                         
+
                             startedPollForModal = false;
-                           
+
                             FirebaseFirestore.instance
                                 .collection('waitOrClickOrStart')
                                 .doc('1')
@@ -234,7 +232,7 @@ class _PollScreenState extends State<PollScreen> {
                                                           );
 
                                                           //Change people
-                                                          if (peopleFire >= 5) {
+                                                          if (peopleFire >= 1) {
                                                             setState(() {
                                                               FirebaseFirestore
                                                                   .instance
@@ -253,7 +251,6 @@ class _PollScreenState extends State<PollScreen> {
                                                               player.play(
                                                                   '2.mp3');
                                                               startTimer();
-                                                           
                                                             });
                                                           } else {
                                                             ScaffoldMessenger
@@ -479,7 +476,7 @@ class _PollScreenState extends State<PollScreen> {
                                                               .votedOrNo = true;
                                                           startedPollForModal =
                                                               false;
-                                                     
+
                                                           Navigator.of(context)
                                                               .popAndPushNamed(
                                                                   '/');
@@ -520,7 +517,7 @@ class _PollScreenState extends State<PollScreen> {
 class WaitZone extends StatelessWidget {
   const WaitZone({Key? key, required this.people}) : super(key: key);
 
- final   people;
+  final people;
 
   @override
   Widget build(BuildContext context) {
@@ -566,4 +563,3 @@ class ResultScreen extends StatelessWidget {
     );
   }
 }
-

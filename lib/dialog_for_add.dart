@@ -85,11 +85,11 @@ class _DialogForAddState extends State<DialogForAdd> {
                 ],
               ),
               Text(
-                "mouth: ${dateTime.month}    day:${dateTime.day}",
+                "Місяць: ${dateTime.month}    День:${dateTime.day}",
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               Text(
-                "hour: ${Time.hour.toString()}    min: ${Time.minute.toString()}",
+                "Година: ${Time.hour.toString()}    Хвилина: ${Time.minute.toString()}",
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               ElevatedButton(
@@ -103,10 +103,16 @@ class _DialogForAddState extends State<DialogForAdd> {
                       // endDate: pollData.selectedTime.millisecondsSinceEpoch,
                       // endTime: pollData.selectedTime2.hour,
                       // startDate: dateTime.millisecondsSinceEpoch,
+
                       startTime: Time.hour,
                       startMinute: Time.minute,
                       votedOrNo: false,
-                      startTimestamp: Timestamp.fromDate(dateTime),
+                      startTimestamp: Timestamp.fromDate(DateTime(
+                          dateTime.year,
+                          dateTime.month,
+                          dateTime.day,
+                          Time.hour,
+                          Time.minute)),
                     ));
 
                     // Navigator.popAndPushNamed(context, '/SelectPoll');
@@ -133,6 +139,7 @@ class _DialogForAddState extends State<DialogForAdd> {
     if (pickedDate != null && pickedDate != dateTime) {
       setState(() {
         dateTime = pickedDate;
+        print(dateTime);
       });
     }
   }
@@ -146,6 +153,7 @@ class _DialogForAddState extends State<DialogForAdd> {
     if (timeOfDay != null && timeOfDay != Time) {
       setState(() {
         Time = timeOfDay;
+        print(Time);
       });
     }
   }

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:rada_poll/login_screen.dart';
 import 'package:rada_poll/models/poll_data.dart';
 
-
 import 'models/poll.dart';
 
 class SelectPoll extends StatelessWidget {
@@ -24,7 +23,6 @@ class SelectPoll extends StatelessWidget {
           return Consumer<PollData>(
             builder: (context, pollData, child) {
               if (snapshot.hasData) {
-                // ..sort(((a, b) => b.id.compareTo(a.id)));
                 var pollsFire = snapshot.data!.docs;
                 var polls = pollData.polls;
                 if (polls.isEmpty) {
@@ -43,44 +41,63 @@ class SelectPoll extends StatelessWidget {
                     }
                   }
                 }
+                // ..sort(((a, b) => b.id.compareTo(a.id)));
 
+                print('123123');
 
                 String selectedPoll = '';
                 var numberPoll = 0;
 
                 if (pollsFire.any((element) =>
-                        element.get('votedOrNo') == false &&
-                        element.get('startTime') == TimeOfDay.now().hour &&
-                        element.get('startMinute') >= TimeOfDay.now().minute - 5
-                    // &&
-                    // element.get('startMinute') >= TimeOfDay.now().minute - 5
-                    )) {
-                  // selectedPoll = polls.indexWhere((element) =>
-                  //     element.startTimestamp.toDate().day ==
-                  //         DateTime.now().day &&
-                  //     element.startTime == TimeOfDay.now().hour &&
-                  //     element.startMinute == TimeOfDay.now().minute &&
-                  //     element.votedOrNo == false);
+                            element.get('votedOrNo') == false &&
+                            element.get('startTime') == TimeOfDay.now().hour &&
+                            element.get('startMinute') >=
+                                TimeOfDay.now().minute &&
+                            element.get('startMinute') - 5 <
+                                TimeOfDay.now().minute
+
+                        // &&
+                        // element.get('startMinute') >= TimeOfDay.now().minute - 5
+                        ) &&
+                    polls.any((element) =>
+                        element.votedOrNo == false &&
+                        element.startTimestamp.seconds >=
+                            Timestamp.now().seconds - 100)) {
                   pollData.haveOrNo = true;
-           
+                  var pollVotedNo = polls.firstWhere((element) =>
+                      element.votedOrNo == false &&
+                      element.startTimestamp.seconds >=
+                          Timestamp.now().seconds - 100);
                   selectedPoll = pollsFire
-                      .lastWhere((element) =>
-                          // element.get('w') ==
-                          //     Timestamp.fromDate(DateTime.now()) &&
-                          element.get('votedOrNo') == false &&
-                          element.get('startTime') == TimeOfDay.now().hour &&
-                          element.get('startMinute') >=
-                              TimeOfDay.now().minute - 5)
+                      .firstWhere((element) =>
+                              // element.get('w') <=
+                              //     Timestamp.fromDate(DateTime.now()) &&
+
+                              element.get('id') == pollVotedNo.id
+
+                          // element.get('votedOrNo') == false &&
+                          //     element.get('startTime') <=
+                          //         TimeOfDay.now().hour &&
+                          //     element.get('startMinute') - 5 <=
+                          //         TimeOfDay.now().minute &&
+                          //     TimeOfDay.now().minute - 1 <=
+                          //         element.get('startMinute') ||
+                          // TimeOfDay.now().minute ==
+                          //         element.get('startMinute') &&
+                          //     element.get('votedOrNo') == false &&
+                          //     element.get('startTime') ==
+                          //         TimeOfDay.now().hour
+
+                          //     &&
+                          // element.get('startMinute') < TimeOfDay.now().minute
+
+                          )
                       .id;
                   numberPoll = snapshot.data!.docs
                       .singleWhere((element) => element.id == selectedPoll)
                       .get('id');
-            
-
-               
                 } else {
                   pollData.haveOrNo = false;
-             
                 }
 
                 // if (polls.any((element) =>
@@ -146,12 +163,10 @@ class SelectPoll extends StatelessWidget {
                                 Center(
                                   child: ElevatedButton(
                                     onPressed: () {
-                               
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginScreen(
+                                              builder: (context) => LoginScreen(
                                                     iid: selectedPoll,
                                                   )));
                                     },

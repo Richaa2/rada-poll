@@ -17,7 +17,11 @@ class ArchiveScreen extends StatelessWidget {
     return Consumer<PollData>(
       builder: (context, pollData, child) {
         String minute = '';
-        var poll = pollData.polls.where((element) => element.votedOrNo == true);
+        var poll = pollData.polls.reversed.where((element) =>
+            element.votedOrNo == true ||
+            element.startTimestamp.millisecondsSinceEpoch <=
+                    Timestamp.now().millisecondsSinceEpoch &&
+                element.votedOrNo == false);
         return StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('poll')
@@ -32,7 +36,7 @@ class ArchiveScreen extends StatelessWidget {
 
                 if (polls.isEmpty) {
                   if (polls.length < pollsFire.length) {
-                    for (var poll in pollsFire) {
+                    for (var poll in pollsFire.reversed) {
                       final accountRow = Poll(
                         decision: poll['decision'],
                         startTime: poll['startTime'],
@@ -59,22 +63,6 @@ class ArchiveScreen extends StatelessWidget {
                       'Минулі голосування',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    actions: [
-                      IconButton(
-                          onPressed: pollsEmpty
-                              ? () {
-                                  Provider.of<PollData>(context, listen: false)
-                                      .addPoll(Poll(
-                                          id: 0,
-                                          question: 'question',
-                                          startTime: TimeOfDay.now().minute,
-                                          startMinute: TimeOfDay.now().hour,
-                                          startTimestamp: Timestamp.now()));
-                                 
-                                }
-                              : () {},
-                          icon: const Icon(Icons.add_circle_outlined))
-                    ],
                   ),
                   body: Container(
                     decoration: const BoxDecoration(
@@ -106,9 +94,7 @@ class ArchiveScreen extends StatelessWidget {
                                 subtitle: Row(
                                   children: [
                                     Text(
-                                      'час початку  ${poll
-                                              .elementAt(index)
-                                              .startTime}:$minute',
+                                      'час початку  ${poll.elementAt(index).startTime}:$minute',
 
                                       style: TextStyle(
                                           color: Colors.indigo[500],
@@ -120,19 +106,13 @@ class ArchiveScreen extends StatelessWidget {
                                       flex: 1,
                                     ),
                                     Text(
-                                      ' число  ${poll
-                                              .elementAt(index)
-                                              .startTimestamp
-                                              .toDate()
-                                              .month}.${poll
-                                              .elementAt(index)
-                                              .startTimestamp
-                                              .toDate()
-                                              .day}',
+                                      ' число  ${poll.elementAt(index).startTimestamp.toDate().month}.${poll.elementAt(index).startTimestamp.toDate().day}',
                                       style: TextStyle(
                                         color: poll.elementAt(index).decision
-                                            ? const Color.fromARGB(255, 15, 124, 18)
-                                            : const Color.fromARGB(255, 160, 23, 13),
+                                            ? const Color.fromARGB(
+                                                255, 15, 124, 18)
+                                            : const Color.fromARGB(
+                                                255, 160, 23, 13),
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                       ),

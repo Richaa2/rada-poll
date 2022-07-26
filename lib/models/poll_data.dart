@@ -11,6 +11,7 @@ class PollData extends ChangeNotifier {
   int seconds2 = 5;
   bool haveOrNo = false;
   int minUser = 5;
+  bool clicked = false;
   List<Poll> polls = [
     // Poll(
     //   id: 1,

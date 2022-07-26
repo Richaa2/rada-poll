@@ -144,10 +144,6 @@ class _PollScreenState extends State<PollScreen> {
                           }
 
                           if (seconds == 0) {
-                            seconds = 10;
-
-                            startedPollForModal = false;
-
                             FirebaseFirestore.instance
                                 .collection('waitOrClickOrStart')
                                 .doc('1')
@@ -155,94 +151,87 @@ class _PollScreenState extends State<PollScreen> {
                             pauseTimer1();
                           }
 
-                          if (waitOrClickOrStartFirebase == 2) {
-                            pollData.waitOrClickOrStart = 2;
-                          }
-
                           pollData.haveOrNo = false;
-                          return WillPopScope(
-                            onWillPop: () async {
-                              return false;
-                            },
-                            child: Scaffold(
-                              body: Container(
-                                decoration: waitOrClickOrStartFirebase < 4
-                                    ? const BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.blue,
-                                            Color.fromARGB(255, 212, 140, 32)
-                                          ],
-                                        ),
-                                      )
-                                    : const BoxDecoration(color: Colors.black),
-                                child: Center(
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height,
-                                    padding: const EdgeInsets.all(20),
-                                    child: Center(
-                                      child: waitOrClickOrStartFirebase == 1
-                                          ? WaitZone(
-                                              people: peopleFire,
-                                            )
-                                          : waitOrClickOrStartFirebase == 2
-                                              ? SafeArea(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                          'зайшло $peopleFire депутатів',
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 30,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700)),
-                                                      const Spacer(
-                                                        flex: 1,
-                                                      ),
-                                                      Text(
-                                                        question,
+                          return Scaffold(
+                            body: Container(
+                              decoration: waitOrClickOrStartFirebase < 4
+                                  ? const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.blue,
+                                          Color.fromARGB(255, 212, 140, 32)
+                                        ],
+                                      ),
+                                    )
+                                  : const BoxDecoration(color: Colors.black),
+                              child: Center(
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  padding: const EdgeInsets.all(20),
+                                  child: Center(
+                                    child: waitOrClickOrStartFirebase == 1
+                                        ? WaitZone(
+                                            people: peopleFire,
+                                          )
+                                        : waitOrClickOrStartFirebase == 2
+                                            ? SafeArea(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                        'зайшло $peopleFire депутатів',
                                                         style: const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 20,
+                                                            fontSize: 30,
                                                             fontWeight:
                                                                 FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      const Spacer(
-                                                        flex: 1,
-                                                      ),
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  primary: peopleFire >=
-                                                                          5
-                                                                      ? Colors
-                                                                          .green
-                                                                      : Colors
-                                                                          .grey),
-                                                          onPressed: () {
-                                                            final snackBar =
-                                                                SnackBar(
-                                                              content: const Text(
-                                                                  'Недостатня кількість депутатів'),
-                                                              action:
-                                                                  SnackBarAction(
-                                                                label:
-                                                                    'Закрити',
-                                                                onPressed:
-                                                                    () {},
-                                                              ),
-                                                            );
+                                                                    .w700)),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    Text(
+                                                      question,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary:
+                                                                    peopleFire >=
+                                                                            5
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .grey),
+                                                        onPressed: () {
+                                                          final snackBar =
+                                                              SnackBar(
+                                                            content: const Text(
+                                                                'Недостатня кількість депутатів'),
+                                                            action:
+                                                                SnackBarAction(
+                                                              label: 'Закрити',
+                                                              onPressed: () {},
+                                                            ),
+                                                          );
 
-                                                            //Change people
-                                                            if (peopleFire >=
-                                                                1) {
-                                                              setState(() {
+                                                          //Change people
+                                                          if (peopleFire >= 1) {
+                                                            setState(() {
+                                                              Future.delayed(
+                                                                      Duration(
+                                                                          seconds:
+                                                                              3))
+                                                                  .then(
+                                                                      (value) {
                                                                 FirebaseFirestore
                                                                     .instance
                                                                     .collection(
@@ -252,183 +241,200 @@ class _PollScreenState extends State<PollScreen> {
                                                                   'waitOrClickOrStart':
                                                                       3
                                                                 });
+                                                                Future.delayed(const Duration(
+                                                                        seconds:
+                                                                            2))
+                                                                    .then(
+                                                                        (value) {
+                                                                  startTimer();
+                                                                  final player =
+                                                                      AudioCache();
+                                                                  player.play(
+                                                                      '2.mp3');
+                                                                });
                                                                 // startMusic =
                                                                 //     false;
                                                                 wait = 3;
-                                                                final player =
-                                                                    AudioCache();
-                                                                player.play(
-                                                                    '2.mp3');
-                                                                startTimer();
                                                               });
-                                                            } else {
-                                                              ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                  .showSnackBar(
-                                                                      snackBar);
-                                                            }
-                                                          },
-                                                          child: const Text(
-                                                            'ПОЧАТИ ГОЛОСУВАННЯ',
-                                                            style: TextStyle(),
-                                                          )),
-                                                      const Spacer(
-                                                        flex: 1,
+                                                            });
+                                                          } else {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    snackBar);
+                                                          }
+                                                        },
+                                                        child: const Text(
+                                                          'ПОЧАТИ ГОЛОСУВАННЯ',
+                                                          style: TextStyle(),
+                                                        )),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : waitOrClickOrStartFirebase == 3
+                                                ? TestScreen(
+                                                    index: widget.indexOfPoll,
+                                                  )
+                                                : Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const Text(
+                                                        'ПІДСУМКИ ГОЛОСУВАННЯ',
+                                                        style: kTextStyle,
+                                                        textAlign:
+                                                            TextAlign.start,
                                                       ),
-                                                    ],
-                                                  ),
-                                                )
-                                              : waitOrClickOrStartFirebase == 3
-                                                  ? TestScreen(
-                                                      index: widget.indexOfPoll,
-                                                    )
-                                                  : Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        const Text(
-                                                          'ПІДСУМКИ ГОЛОСУВАННЯ',
-                                                          style: kTextStyle,
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Flexible(
-                                                              flex: 6,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: const [
-                                                                  Text('ЗА',
-                                                                      style:
-                                                                          kTextStyle),
-                                                                  Text('ПРОТИ',
-                                                                      style:
-                                                                          kTextStyle),
-                                                                  Text(
-                                                                      'УТРИМАЛИСЬ',
-                                                                      style:
-                                                                          kTextStyle),
-                                                                  Text(
-                                                                    'НЕ ГОЛОСУВАЛО',
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Flexible(
+                                                            flex: 6,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: const [
+                                                                Text('ЗА',
                                                                     style:
-                                                                        kTextStyle,
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                  Text(
-                                                                    'ВСЬОГО',
+                                                                        kTextStyle),
+                                                                Text('ПРОТИ',
                                                                     style:
-                                                                        kTextStyle,
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                                        kTextStyle),
+                                                                Text(
+                                                                    'УТРИМАЛИСЬ',
+                                                                    style:
+                                                                        kTextStyle),
+                                                                Text(
+                                                                  'НЕ ГОЛОСУВАЛО',
+                                                                  style:
+                                                                      kTextStyle,
+                                                                  maxLines: 1,
+                                                                ),
+                                                                Text(
+                                                                  'ВСЬОГО',
+                                                                  style:
+                                                                      kTextStyle,
+                                                                  maxLines: 1,
+                                                                ),
+                                                              ],
                                                             ),
-                                                            const Spacer(
-                                                              flex: 1,
+                                                          ),
+                                                          const Spacer(
+                                                            flex: 1,
+                                                          ),
+                                                          Flexible(
+                                                            flex: 3,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                    (yesOld
+                                                                        .toString()),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .green,
+                                                                      fontSize:
+                                                                          22,
+                                                                    )),
+                                                                Text(
+                                                                    noOld
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .red,
+                                                                      fontSize:
+                                                                          22,
+                                                                    )),
+                                                                Text(
+                                                                    holdOld
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .yellow,
+                                                                      fontSize:
+                                                                          22,
+                                                                    )),
+                                                                Text(
+                                                                    didNotVote
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .teal,
+                                                                      fontSize:
+                                                                          22,
+                                                                    )),
+                                                                Text(
+                                                                    allUsersPoll
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontSize:
+                                                                          22,
+                                                                    )),
+                                                              ],
                                                             ),
-                                                            Flexible(
-                                                              flex: 3,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                      (yesOld
-                                                                          .toString()),
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .green,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      noOld
-                                                                          .toString(),
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .red,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
+                                                          ),
+                                                          const Spacer(
+                                                            flex: 2,
+                                                          )
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Text(
+                                                          yesOld >
+                                                                  noOld +
                                                                       holdOld
-                                                                          .toString(),
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .yellow,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      didNotVote
-                                                                          .toString(),
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .teal,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                  Text(
-                                                                      allUsersPoll
-                                                                          .toString(),
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        fontSize:
-                                                                            22,
-                                                                      )),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            const Spacer(
-                                                              flex: 2,
-                                                            )
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 15,
-                                                        ),
-                                                        Text(
-                                                            yesOld >
+                                                              ? 'РІШЕННЯ ПРИЙНЯТО'
+                                                              : 'РІШЕННЯ НЕ ПРИЙНЯТО',
+                                                          style: TextStyle(
+                                                            color: yesOld >
                                                                     noOld +
                                                                         holdOld
-                                                                ? 'РІШЕННЯ ПРИЙНЯТО'
-                                                                : 'РІШЕННЯ НЕ ПРИЙНЯТО',
-                                                            style: TextStyle(
-                                                              color: yesOld >
-                                                                      noOld +
-                                                                          holdOld
-                                                                  ? Colors.green
-                                                                  : Colors.red,
-                                                              fontSize: 22,
-                                                            )),
-                                                        const SizedBox(
-                                                          height: 100,
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                            fontSize: 22,
+                                                          )),
+                                                      const SizedBox(
+                                                        height: 100,
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Colors
+                                                                      .blueGrey
+                                                                      .withOpacity(
+                                                                          0.5)),
                                                         ),
-                                                        ElevatedButton(
-                                                          style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(Colors
-                                                                        .blueGrey
-                                                                        .withOpacity(
-                                                                            0.5)),
-                                                          ),
-                                                          onPressed: () {
+                                                        onPressed: () {
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'poll')
+                                                              .doc(widget
+                                                                  .indexOfPoll)
+                                                              .update({
+                                                            'votedOrNo': true
+                                                          });
+                                                          if (yesOld >
+                                                              noOld + holdOld) {
                                                             FirebaseFirestore
                                                                 .instance
                                                                 .collection(
@@ -436,87 +442,69 @@ class _PollScreenState extends State<PollScreen> {
                                                                 .doc(widget
                                                                     .indexOfPoll)
                                                                 .update({
-                                                              'votedOrNo': true
+                                                              'decision': true
                                                             });
-                                                            if (yesOld >
-                                                                noOld +
-                                                                    holdOld) {
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'poll')
-                                                                  .doc(widget
-                                                                      .indexOfPoll)
-                                                                  .update({
-                                                                'decision': true
-                                                              });
-                                                              // poll.changeDecision();
-                                                            } else {
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'poll')
-                                                                  .doc(widget
-                                                                      .indexOfPoll)
-                                                                  .update({
-                                                                'decision':
-                                                                    false
-                                                              });
-                                                              // poll.decision = false;
-                                                            }
-
+                                                            // poll.changeDecision();
+                                                          } else {
                                                             FirebaseFirestore
                                                                 .instance
                                                                 .collection(
-                                                                    'users')
-                                                                .doc('1')
+                                                                    'poll')
+                                                                .doc(widget
+                                                                    .indexOfPoll)
                                                                 .update({
-                                                              'amount': 0
+                                                              'decision': false
                                                             });
+                                                            // poll.decision = false;
+                                                          }
 
-                                                            int index = snapshot2
-                                                                .data!.docs
-                                                                .singleWhere(
-                                                                    (element) =>
-                                                                        element
-                                                                            .id ==
-                                                                        widget
-                                                                            .indexOfPoll)
-                                                                .get('id');
-                                                            pollData
-                                                                .polls[
-                                                                    index - 1]
-                                                                .votedOrNo = true;
-                                                            startedPollForModal =
-                                                                false;
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'users')
+                                                              .doc('1')
+                                                              .update({
+                                                            'amount': 0
+                                                          });
 
-                                                            Navigator.of(
-                                                                    context)
-                                                                .popAndPushNamed(
-                                                                    '/');
+                                                          int index = snapshot2
+                                                              .data!.docs
+                                                              .singleWhere(
+                                                                  (element) =>
+                                                                      element
+                                                                          .id ==
+                                                                      widget
+                                                                          .indexOfPoll)
+                                                              .get('id');
+                                                          pollData
+                                                              .polls[index - 1]
+                                                              .votedOrNo = true;
+                                                          startedPollForModal =
+                                                              false;
 
-                                                            Provider.of<PollData>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .seconds2 = 5;
-                                                            wait = 1;
-                                                            FirebaseAuth
-                                                                .instance
-                                                                .signOut();
+                                                          Navigator.of(context)
+                                                              .popAndPushNamed(
+                                                                  '/');
 
-                                                            // poll.votedOrNo = true;
-                                                          },
-                                                          child: const Text(
-                                                            'завершити',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .yellow),
-                                                          ),
+                                                          Provider.of<PollData>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .seconds2 = 5;
+                                                          wait = 1;
+                                                          FirebaseAuth.instance
+                                                              .signOut();
+
+                                                          // poll.votedOrNo = true;
+                                                        },
+                                                        child: const Text(
+                                                          'завершити',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .yellow),
                                                         ),
-                                                      ],
-                                                    ),
-                                    ),
+                                                      ),
+                                                    ],
+                                                  ),
                                   ),
                                 ),
                               ),

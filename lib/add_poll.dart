@@ -7,6 +7,8 @@ import 'package:rada_poll/dialog_for_add.dart';
 import 'package:rada_poll/models/poll.dart';
 import 'package:rada_poll/models/poll_data.dart';
 
+import 'login_for_add.dart';
+
 class AddPollScreen extends StatelessWidget {
   const AddPollScreen({Key? key}) : super(key: key);
 
@@ -89,7 +91,10 @@ class AddPollScreen extends StatelessWidget {
                       onPressed: () {
                         showDialog(
                             context: context,
-                            builder: (context) => const DialogForAdd());
+                            builder: (context) => LoginForAdd());
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (context) => const DialogForAdd());
                       },
                     )
                   ],
